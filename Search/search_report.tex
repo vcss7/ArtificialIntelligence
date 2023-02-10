@@ -1,0 +1,114 @@
+\documentclass[11pt]{article}
+
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[margin=1.0in]{geometry}
+\usepackage[none]{hyphenat}
+\usepackage{amsfonts,amsmath,amssymb}
+\usepackage{fancyhdr}
+
+\thispagestyle{fancy}
+\headheight14pt
+\fancyhead{}
+\fancyhead[L]{\slshape\MakeUppercase{\large Assignment-01: Search}}
+\fancyhead[R]{\large \slshape Victor Solis | \today}
+
+\begin{document}
+\begin{flushleft}
+Artificial intelligence assignment 1; practicing basic and informed search 
+algorithms.
+
+\section*{Game of Chess}
+
+\subsection*{Problem}
+Consider the game of Chess (https://en.wikipedia.org/wiki/Chess). Approximately,
+how many different states can a chess game have? You may assume
+
+\begin{enumerate}
+    \item We do not consider pawn promotion
+    \item We consider each pawn is a distinct piece
+    \item We consider only states with no captured pieces, i.e. all states will
+        have 32 pieces
+    \item We do not consider pawn promotion, castling, or any other special
+        cases.
+\end{enumerate}
+
+State any other assumptions made and show your work. Your answer does not have 
+to be mathematically correct, but should be in the right magnitude for the 
+assumptions you have made and make sense based on your math.
+
+\subsection*{Answer}
+
+\hspace{1cm}
+\hrule
+\section*{Wolf, Goat, and Cabbage Problem}
+
+\subsection*{Problem}
+A farmer has just bought a wolf, a goat, and a cabbage. They must cross the
+river to get home, but their small rowboat can only carry the farmer and 1
+animal or vegetable at a time. However, the farmer cannot leave the goat
+unsupervised with the cabbage, or the goat will eat the cabbage. Similarly,
+the farmer cannot leave the goat unsupervised with the wolf, or the wolf
+will eat the goat. Draw the full search space starting from the initial
+state below. Indicate with different colors or labels which states would
+not be further explored because something gets eaten, as well as which
+states would not be further explored because they are repeats of previous
+states (to avoid cycles)
+%%% TODO: Add Initial State and Goal State inage
+
+\subsection*{Answer}
+
+\hspace{1cm}
+\hrule
+\section*{Search Algorithms on a State Space Graph}
+
+\subsection*{Problem}
+Consider the following state space graph with Initial State S and Goal State G
+
+\begin{enumerate}
+    \item Draw out the complete search tree, ignoring cycles by not allowing
+        the same node in the path more than once. The tree has been started
+        below to show formatting.
+    \item List the Node exploration order for a Breadth First Search. For
+        grading simplicity, when there is a tie, explore the nodes
+        alphabetically.
+    \item List the Node exploration order for a Depth First Search. For grading
+        simplicity, when there is a tie, explore the nodes alphabetically.
+    \item The table below shows the estimated distance from each node to the
+        goal. Using these as the heuristic h(n), list the Node exploration
+        order for a Best-First Search. For grading simplicity, when there is a
+        tie, explore the
+    \item Using the same table as the heuristic h(n), list the A* Node
+        exploration order. For grading simplicity, when there is a tie, explore
+        the nodes alphabetically. nodes alphabetically.
+\end{enumerate}
+
+\subsection*{Answer}
+
+\hspace{1cm}
+\hrule
+\section*{Search Trees on a Grid}
+
+\subsection*{Poblem}
+Consider the grid below with start state 50 and goal state 49:
+
+Draw the search tree for the following algorithms a-d assuming: 
+\begin{enumerate}
+    \item Black squares are walls that cannot be passed through. 
+    \item Break ties in the order N-E-S-W.
+    \item Each step has a uniform cost.
+    \item The heuristic is the Manhattan distance to the goal. (Don’t count
+        black wall tiles, but for heuristic estimate, go through them)
+\end{enumerate}
+
+\subsection*{Answer}
+\begin{enumerate}
+    \item Breadth-First Search (5 layers)
+    \item Depth-First Search
+    \item Beam Search with W=2 (5 layers)
+    \item A*
+    \item What is the optimal path found by A*
+\end{enumerate}
+
+\end{flushleft}
+\end{document}
