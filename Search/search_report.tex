@@ -39,6 +39,49 @@ assumptions you have made and make sense based on your math.
 
 \subsection*{Answer}
 
+Additional assumtions will be:
+\begin{enumerate}
+    \item Pawns can not exist in the 1\textsuperscript{st} or 
+        8\textsuperscript{th} rank
+    \item Pawns can not stack (i.e. two of the same colored pawns cannot be on
+        the same column)
+    \item Black/White have one bishop that resides in the black tiles and
+        one bishop that resides on the white tiles
+    \item How the position came to be is not relevent
+    \item Kings can be within one tile of eachother
+\end{enumerate}
+We will start by calculating the number of possible positions of the pieces
+which do not have tile restrictions. Then, we will place the pieces that do have
+possible restriction; that is, the bishops and pawns.
+
+First we start with a single rook. Without any other pieces on the board, it has
+64 possible positions it can exists on.
+
+Then, we go to a second rook. Since one of the tiles is occupied by the first
+placed rook, the second rook only has 63 possible tiles ot exist on.
+
+Similarilly, the third rook will only have 62 tiles that it can possible exist
+on.
+
+At this stage, we can recognize a pattern: As tiles get occupied by previous
+    pieces, the number of available tiles reduces by one.
+
+The number of states the pieces (minus the pawns and bishops) can be represented
+by the following product series.
+\begin{equation}
+    s_{tot1} = \prod_{i = 0}^{p - 1} (64 - i)
+\end{equation}
+Where $s_{tot1}$ are the total number of possible states for the pieces without
+tiles restrictions and $p$ is the number of pieces placed.
+
+There are a total of 12 chess pieces without the pawns and bishops.
+Therefore,
+\begin{equation}
+    s_{tot1} = \prod_{i = 0}^{11} (64 - i) = 64 * 63 * ... * 53 \approx 1.573 *
+    10^{21}
+\end{equation}
+
+
 \hspace{1cm}
 \hrule
 \section*{Wolf, Goat, and Cabbage Problem}
