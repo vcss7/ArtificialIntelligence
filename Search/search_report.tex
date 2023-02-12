@@ -6,6 +6,7 @@
 \usepackage[none]{hyphenat}
 \usepackage{amsfonts,amsmath,amssymb}
 \usepackage{fancyhdr}
+\usepackage{soul}
 
 \thispagestyle{fancy}
 \headheight14pt
@@ -80,6 +81,33 @@ Therefore,
     s_{tot1} = \prod_{i = 0}^{11} (64 - i) = 64 * 63 * ... * 53 \approx 1.573 *
     10^{21}
 \end{equation}
+
+Now, we must place the pawns and bishops.
+
+The pawns are restricted from the 2\textsuperscript{nd} to the
+7\textsuperscript{th} rank and to one of the columns.
+
+This gives each of the pawns 6 tiles to exist on. That means, without any
+obstructions, pawns can have a total of
+\begin{equation}
+    s_{tot2} = 6^{8} + 5^{8} \approx 2.07 * 10^{6}
+\end{equation}
+where $s_{tot2}$ is the total number of states for the pawns. Note: we will not
+filter out states where other pieces are occupying all possible tiles in a
+pawn's column since this is negligible considering the magnitude of number in
+Equation $2$.
+
+The bishops are each restricted to either the white or the black tiles. This
+gives each of the bishops 32 tiles to exist on. That means, without any
+other pieces taking any tiles from the bishops, we can have a total of
+\begin{equation}
+    s_{tot3} = 32^{2} + 31^{2} \approx 9.84 * 10^{5}
+\end{equation}
+The results from Equations $3$ and $4$ are very negligible compared to the
+result from Equation $2$.
+
+We can then say there will be approxamilly \ul{$1.573 * 10^{21}$ possible
+states} of the chess position given the initial restrictions.
 
 
 \hspace{1cm}
