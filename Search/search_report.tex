@@ -409,8 +409,66 @@ Draw the search tree for the following algorithms a-d assuming:
 
 \subsection*{Answer}
 \begin{enumerate}
-    \item Breadth-First Search (5 layers)
-    \item Depth-First Search
+    \item Breadth-First Search (5 layers). Nodes are search from left to right
+        on each layer.\\
+        \begin{center}
+            \begin{tikzpicture}
+                \node [style=rect] (0) at (2, 9) {50};
+                \node [style=rect] (1) at (2, 8) {60};
+                \node [style=rect] (2) at (1, 7) {61};
+                \node [style=rect] (3) at (3, 7) {70};
+                \node [style=rect] (4) at (-0.25, 6) {62};
+                \node [style=rect] (5) at (1.75, 6) {71};
+                \node [style=rect] (6) at (3.75, 6) {71};
+                \node [style=rect] (7) at (-1.5, 5) {52};
+                \node [style=rect] (8) at (-0.25, 5) {63};
+                \node [style=rect] (9) at (1, 5) {72};
+                \node [style=rect] (10) at (2.5, 5) {72};
+                \node [style=rect] (11) at (4.5, 5) {72};
+                \node [style=rect] (12) at (-3.5, 3.75) {42};
+                \node [style=rect] (13) at (-2, 3.75) {53};
+                \node [style=rect] (14) at (-0.75, 3.75) {53};
+                \node [style=rect] (15) at (0.25, 3.75) {73};
+                \node [style=rect] (16) at (1.25, 3.75) {73};
+                \node [style=rect] (17) at (3.25, 3.75) {73};
+                \node [style=rect] (18) at (5.25, 3.75) {73};
+                \node [style=rect] (19) at (2.25, 3.75) {62};
+                \node [style=rect] (20) at (4.25, 3.75) {62};
+                \draw (0) to (1);
+                \draw [style=arrow] (0) to (1);
+                \draw [style=arrow] (1) to (2);
+                \draw [style=arrow] (1) to (3);
+                \draw [style=arrow] (3) to (6);
+                \draw [style=arrow] (2) to (4);
+                \draw [style=arrow] (2) to (5);
+                \draw [style=arrow] (4) to (7);
+                \draw [style=arrow] (4) to (8);
+                \draw [style=arrow] (4) to (9);
+                \draw [style=arrow] (5) to (10);
+                \draw [style=arrow] (6) to (11);
+                \draw [style=arrow] (7) to (12);
+                \draw [style=arrow] (7) to (13);
+                \draw [style=arrow] (8) to (14);
+                \draw [style=arrow] (8) to (15);
+                \draw [style=arrow] (9) to (16);
+                \draw [style=arrow] (10) to (17);
+                \draw [style=arrow] (11) to (18);
+                \draw [style=arrow] (10) to (19);
+                \draw [style=arrow] (11) to (20);
+            \end{tikzpicture}
+        \end{center}
+
+    \item Depth-First Search. For this problem I will list the nodes visited on
+        a table from left to right since a tree will be ridiculously long.
+        \begin{tabular}{| c | c | c | c | c | c | c | c | c | c | c | c | c | c
+            |}
+            \hline
+            50 & 60 & 61 & 62 & 52 & 42 & 32 & 33 & 23 & 13 & 3 & 4 & 5 & 6\\
+            \hline
+            16 & 26 & 36 & 37 & 38 & 28 & 18 & 8 & 9 & 19 & 29 & 39 & 49&\\
+            \hline
+        \end{tabular}
+
     \item Beam Search with W=2 (5 layers)
     \item A*
     \item What is the optimal path found by A*
