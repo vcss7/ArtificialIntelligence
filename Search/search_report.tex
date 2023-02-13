@@ -359,11 +359,35 @@ Consider the following state space graph with Initial State S and Goal State G
             \end{tikzpicture}
             }
         \end{flushleft}
-    \item Node exploration order for Breadth First Search.
 
-    \item Node exploration order for Depth First Search.
-    \item Node exploration order for Best-First Search.
-    \item Node exploration order for A* Search.
+    \item Node exploration order for Breadth First Search.\\
+        \begin{tabular}{| c | c | c | c | c | c | c | c | c |}
+            \hline
+            S & SA & SB & SC & SF & SAC & SAD & SBE & SBG \\
+            \hline
+        \end{tabular}
+
+    \item Node exploration order for Depth First Search.\\
+        \begin{tabular}{| c | c | c | c | c | c | c |}
+            \hline
+            S & SA & SAC & SACD & SACDB & SACDBE & SACDBEG  \\
+            \hline
+        \end{tabular}
+
+    \item Node exploration order for Best-First Search.\\
+        \begin{tabular}{| c | c | c |}
+            \hline
+            S & SC & SCG\\
+            \hline
+        \end{tabular}
+
+    \item Node exploration order for A* Search.\\
+        \begin{tabular}{| c | c | c |}
+            \hline
+            S & SC & SCG\\
+            \hline
+        \end{tabular}
+
 \end{enumerate}
 
 
