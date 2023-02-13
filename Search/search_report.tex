@@ -7,6 +7,8 @@
 \usepackage{amsfonts,amsmath,amssymb}
 \usepackage{fancyhdr}
 \usepackage{soul}
+\usepackage{tikz}
+\usetikzlibrary{shapes}
 
 \thispagestyle{fancy}
 \headheight14pt
@@ -126,8 +128,87 @@ not be further explored because something gets eaten, as well as which
 states would not be further explored because they are repeats of previous
 states (to avoid cycles)
 %%% TODO: Add Initial State and Goal State inage
+\tikzstyle{staterunning}=[fill=white, draw=black, shape=circle split, radius=1cm]
+
+\begin{center}
+    \begin{tikzpicture}
+            \node [style=staterunning] (0) at (-2.25, 2) {*WGC};
+            \node [style=staterunning] (1) at (2.25, 2) {\nodepart{lower}*WGC};
+            \node (2) at (-2.25, 3.25) {Initial State};
+            \node (3) at (2.25, 3.25) {Goal State};
+    \end{tikzpicture}
+\end{center}
+
 
 \subsection*{Answer}
+
+Here is the full search space where $*$ represents the farmer, W represents the
+wolf, G represents the goat, C represents the cabbage. In the transitions, the
+letter shown next to the edge is the animal or vegetable crossing the river; the
+$*$ alone is the farmer crossing the river on his own.
+
+\tikzstyle{none}=[]
+\tikzstyle{runningstate}=[fill=white, draw=black, shape=circle split, radius=1cm]
+\tikzstyle{deadstate}=[fill={rgb,255: red,255; green,103; blue,103}, draw=black, shape=circle split, radius=1]
+\tikzstyle{accepted}=[fill={rgb,255: red,0; green,200; blue,0}, draw=black, shape=circle split, radius=1cm]
+
+% Edge styles
+\tikzstyle{deadarrow}=[fill=none, ->, draw={rgb,255: red,255; green,103; blue,103}, thick]
+\tikzstyle{acceptedarrow}=[fill=none, ->, draw={rgb,255: red,0; green,200; blue,0}, thick]
+\tikzstyle{doublearrow}=[<->, thick]
+
+\begin{center}
+    \begin{tikzpicture}
+            \node [style=runningstate] (0) at (0, 4) {*WGC};
+            \node [style=deadstate] (1) at (-3, 3) {GC\nodepart{lower}*W};
+            \node [style=deadstate] (2) at (3, 3) {WG\nodepart{lower}*C};
+            \node [style=runningstate] (3) at (0, 1) {WC\nodepart{lower}*G};
+            \node [style=none] (4) at (0.5, 2.5) {G};
+            \node [style=none] (5) at (1.75, 3.75) {C};
+            \node [style=none] (6) at (-1.75, 3.75) {W};
+            \node [style=runningstate] (7) at (0, -2) {*WC\nodepart{lower}G};
+            \node [style=none] (8) at (0.5, -0.5) {*};
+            \node [style=runningstate] (9) at (-3, -3) {C\nodepart{lower}*WG};
+            \node [style=none] (10) at (-1.75, -2.25) {W};
+            \node [style=runningstate] (11) at (3, -3) {W\nodepart{lower}*GC};
+            \node [style=none] (12) at (1.75, -2) {C};
+            \node [style=deadstate] (13) at (-6, -4) {*C\nodepart{lower}WG};
+            \node [style=runningstate] (14) at (-3, -6) {*GC\nodepart{lower}W};
+            \node [style=none] (15) at (-4.5, -3.25) {*};
+            \node [style=none] (16) at (-2.5, -4.5) {G};
+            \node [style=runningstate] (17) at (3, -6) {*WG\nodepart{lower}C};
+            \node [style=deadstate] (18) at (6, -4) {*W\nodepart{lower}GC};
+            \node [style=none] (19) at (4.75, -3.25) {*};
+            \node [style=none] (20) at (2.5, -4.5) {G};
+            \node [style=deadstate] (21) at (-6, -7) {GC\nodepart{lower}*W};
+            \node [style=runningstate] (23) at (0, -7) {G\nodepart{lower}*WC};
+            \node [style=deadstate] (24) at (6, -7) {WG\nodepart{lower}*C};
+            \node [style=none] (25) at (-4.75, -6.25) {*};
+            \node [style=none] (26) at (4.75, -6.25) {*};
+            \node [style=none] (27) at (-1.25, -6.25) {C};
+            \node [style=none] (28) at (1, -6.25) {W};
+            \node [style=runningstate] (29) at (0, -10) {*G\nodepart{lower}WC};
+            \node [style=accepted] (30) at (0, -13) {\nodepart{lower}*WGC};
+            \node [style=none] (31) at (0.5, -8.5) {*};
+            \node [style=none] (32) at (0.5, -11.5) {G};
+            \draw [style=doublearrow] (0) to (3);
+            \draw [style=deadarrow] (0) to (2);
+            \draw [style=deadarrow] (0) to (1);
+            \draw [style=doublearrow] (3) to (7);
+            \draw [style=doublearrow] (7) to (9);
+            \draw [style=doublearrow] (7) to (11);
+            \draw [style=deadarrow] (9) to (13);
+            \draw [style=doublearrow] (9) to (14);
+            \draw [style=deadarrow, in=165, out=-15] (11) to (18);
+            \draw [style=doublearrow] (11) to (17);
+            \draw [style=deadarrow] (17) to (24);
+            \draw [style=deadarrow] (14) to (21);
+            \draw [style=doublearrow] (17) to (23);
+            \draw [style=doublearrow] (14) to (23);
+            \draw [style=doublearrow] (23) to (29);
+            \draw [style=acceptedarrow] (29) to (30);
+    \end{tikzpicture}
+\end{center}
 
 \hspace{1cm}
 \hrule
