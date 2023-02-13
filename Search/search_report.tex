@@ -237,6 +237,38 @@ Consider the following state space graph with Initial State S and Goal State G
 
 \subsection*{Answer}
 
+% Node styles
+\tikzstyle{rect}=[fill=white, draw=black, shape=rectangle]
+
+% Edge styles
+\tikzstyle{arrow}=[thick, ->]
+
+\begin{enumerate}
+    \item Complete search tree without repeating nodes. Tree starting at
+        S.\\
+        \begin{center}
+            \begin{tikzpicture}
+                \node [style=rect] (0) at (0, 7) {S};
+                \node [style=rect] (1) at (-3, 7) {SA};
+                \node [style=rect] (2) at (-1.5, 6) {SB};
+                \node [style=rect] (3) at (1.5, 6) {SC};
+                \node [style=rect] (4) at (3, 7) {SF};
+                \node [style=rect] (6) at (-4.5, 6) {SAD};
+                \node [style=rect] (8) at (-3, 5) {SBE};
+                \node [style=rect] (9) at (0, 5) {SBG};
+                \draw [style=arrow] (0) to (1);
+                \draw [style=arrow] (0) to (2);
+                \draw [style=arrow] (0) to (3);
+                \draw [style=arrow] (0) to (4);
+                \draw [style=arrow] (1) to (6);
+                \draw [style=arrow] (2) to (8);
+                \draw [style=arrow] (2) to (9);
+            \end{tikzpicture}
+        \end{center}
+    \item Node exploration order BFS.
+\end{enumerate}
+
+
 \hspace{1cm}
 \hrule
 \section*{Search Trees on a Grid}
