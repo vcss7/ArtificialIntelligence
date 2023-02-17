@@ -3,7 +3,8 @@ Overview:
     in particular, Breadth-First, Depth-First, and A-Star.
     It involves a program that simulates a puzzle called an N-Puzzle:
     https://en.wikipedia.org/wiki/15_puzzle
-    In our version, the blank space is in the bottom right in the solution and we are working on 3x3 puzzles
+    In our version, the blank space is in the bottom right in the solution and
+    we are working on 3x3 puzzles
 
 
 Files:
@@ -38,7 +39,8 @@ Assignment:
         (20 pt) Breadth First Search,
         (20 pt) Depth First Search,
         (20 pt) A-Star with the heuristic: # of misplaced tiles
-        (20 pt) A-Star with the heuristic: Sum of Manhattan Distance of each tile from correct position.
+        (20 pt) A-Star with the heuristic: Sum of Manhattan Distance of each 
+            tile from correct position.
     Compare (20pt):
         Which algorithm performed the fastest,
         which took up the most memory and
