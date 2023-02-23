@@ -1,4 +1,6 @@
+import time
 from collections import deque
+from queue import PriorityQueue
 from copy import deepcopy
 
 # ENUMS
@@ -6,36 +8,7 @@ UP = 0
 LEFT = 1
 DOWN = 2
 RIGHT = 3
-# TODO: make a class or struct to hold a num and its coordinates in the puzzle
-#       add a swap function
-#       add a check if correct coordinates for num
-#       create a list of puzzle configurations visited
 
-def is_solved(puzzle):
-    """
-    Checks if a puzzle is in the solved state:
-        1 2 3
-        4 5 6
-        7 8 0
-
-    Arguments:
-    - puzzle: Node object to check
-
-    Return:
-    is_solved: boolean of whethe the puzzle is solved or not
-    """
-    solved_list = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
-
-    for i in range(len(puzzle)):
-        for j in range(len(puzzle)):
-            if puzzle[i][j] != solved_list[i][j]:
-                return False
-    return True
-
-# if the empty space is in the first row, we cannot move down
-# if the empty space is in the third row, we cannot move up
-# if the empty space is in the first column, we cannot move right
-# if the empty space is in the third column, we cannot move left
 
 def move_up(puzzle):
     for row in range(len(puzzle)):
@@ -95,6 +68,8 @@ def BFS(puzzle):
     Return:
     final_solution: An ordered list of moves representing the final solution.
     """
+    start_time = time.time()
+
     # keep track of the nodes we have and have not explored
     unexplored_nodes = deque([(puzzle, [])])
     explored_nodes = []
@@ -104,6 +79,8 @@ def BFS(puzzle):
         node, path = unexplored_nodes.popleft()
 
         if node == goal_state:
+            end_time = time.time()
+            print(end_time - start_time)
             return path
 
         explored_nodes.append(node)
@@ -132,7 +109,10 @@ def BFS(puzzle):
             if temp4 not in explored_nodes:
                 unexplored_nodes.append((temp4, path + [3]))
 
+    end_time = time.time()
+    print(end_time - start_time)
     return []
+
 
 def DFS(puzzle):
     """
@@ -152,7 +132,7 @@ def DFS(puzzle):
     goal_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
 
     i = 0
-    while unexplored_nodes:
+    while i < 20 and unexplored_nodes:
         node, path = unexplored_nodes.pop()
 
         if node == goal_state:
@@ -183,11 +163,22 @@ def DFS(puzzle):
         if move_up(temp1):
             if temp1 not in explored_nodes:
                 unexplored_nodes.append((temp1, path + [0]))
-
-        print(node)
+        
         i += 1
 
     return final_solution
+
+
+def get_num_misplaced(puzzle):
+    num_misplaced = 0
+
+    for row in range(len(puzzle)):
+         for col in range(len(puzzle[row])):
+             p = row * 3 + col + 1
+             if puzzle[row][col] != p:
+                 num_misplaced += 1
+
+    return num_misplaced
 
 
 def A_Star_H1(puzzle):
@@ -200,12 +191,64 @@ def A_Star_H1(puzzle):
     Return:
     final_solution: An ordered list of moves representing the final solution.
     """
-
     final_solution = []
 
-    # TODO: WRITE CODE
+     # keep track of the nodes we have and have not explored
+    unexplored_nodes = PriorityQueue()
+    unexplored_nodes.put((get_num_misplaced(puzzle), puzzle, []))
 
-    return final_solution
+    explored_nodes = []
+    goal_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+
+    while unexplored_nodes:
+        man, node, path = unexplored_nodes.get()
+
+        if node == goal_state:
+            return path
+
+        explored_nodes.append(node)
+
+        # add UP to queue
+        temp1 = deepcopy(node)
+        if move_up(temp1):
+            if temp1 not in explored_nodes:
+                unexplored_nodes.put((get_num_misplaced(temp1), temp1, path + [0]))
+
+        # add LEFT to queue
+        temp2 = deepcopy(node)
+        if move_left(temp2):
+            if temp2 not in explored_nodes:
+                unexplored_nodes.put((get_num_misplaced(temp2), temp2, path + [1]))
+
+        # add DOWN to queue
+        temp3 = deepcopy(node)
+        if move_down(temp3):
+            if temp3 not in explored_nodes:
+                unexplored_nodes.put((get_num_misplaced(temp3), temp3, path + [2]))
+
+        # add RIGHT to queue
+        temp4 = deepcopy(node)
+        if move_right(temp4):
+            if temp4 not in explored_nodes:
+                unexplored_nodes.put((get_num_misplaced(temp4), temp4, path + [3]))
+
+    return []
+
+
+def manhattan_dist(puzzle):
+    man_dist = 0
+
+    for row in range(len(puzzle)):
+         for col in range(len(puzzle[row])):
+             num = puzzle[row][col]
+             if num == 0:
+                 man_dist += (2 - row) + (2 - col)
+             else:
+                 target_row = (num - 1) // 3
+                 target_col = (num - 1) % 3
+                 man_dist += abs(row - target_row) + abs(col - target_col)
+
+    return man_dist
 
 
 def A_Star_H2(puzzle):
@@ -221,6 +264,43 @@ def A_Star_H2(puzzle):
 
     final_solution = []
 
-    # TODO: WRITE CODE
+     # keep track of the nodes we have and have not explored
+    unexplored_nodes = PriorityQueue()
+    unexplored_nodes.put((manhattan_dist(puzzle), puzzle, []))
 
-    return final_solution
+    explored_nodes = []
+    goal_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+
+    while unexplored_nodes:
+        man, node, path = unexplored_nodes.get()
+
+        if node == goal_state:
+            return path
+
+        explored_nodes.append(node)
+
+        # add UP to queue
+        temp1 = deepcopy(node)
+        if move_up(temp1):
+            if temp1 not in explored_nodes:
+                unexplored_nodes.put((manhattan_dist(temp1), temp1, path + [0]))
+
+        # add LEFT to queue
+        temp2 = deepcopy(node)
+        if move_left(temp2):
+            if temp2 not in explored_nodes:
+                unexplored_nodes.put((manhattan_dist(temp2), temp2, path + [1]))
+
+        # add DOWN to queue
+        temp3 = deepcopy(node)
+        if move_down(temp3):
+            if temp3 not in explored_nodes:
+                unexplored_nodes.put((manhattan_dist(temp3), temp3, path + [2]))
+
+        # add RIGHT to queue
+        temp4 = deepcopy(node)
+        if move_right(temp4):
+            if temp4 not in explored_nodes:
+                unexplored_nodes.put((manhattan_dist(temp4), temp4, path + [3]))
+
+    return []
