@@ -32,12 +32,17 @@ def read_puzzle(filename):
         puzzle = []
         with open(filename, "r") as f:
             for line in f.readlines():
-                puzzle.append(line.split(' '))
+                row = []
+                for element in line.split():
+                    row.append(int(element))
+                puzzle.append(row)
+
         return puzzle
 
 def run_test(size, filename):
     """
     Takes a filename,
+
     then creates a puzzle,
     reads it in from file,
     and runs each of the search algorithms
