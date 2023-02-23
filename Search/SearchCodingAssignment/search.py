@@ -1,3 +1,6 @@
+from collections import deque
+from copy import deepcopy
+
 # ENUMS
 UP = 0
 LEFT = 1
@@ -26,8 +29,60 @@ def is_solved(puzzle):
     for i in range(len(puzzle)):
         for j in range(len(puzzle)):
             if puzzle[i][j] != solved_list[i][j]:
-                return false
-    return true
+                return False
+    return True
+
+# if the empty space is in the first row, we cannot move down
+# if the empty space is in the third row, we cannot move up
+# if the empty space is in the first column, we cannot move right
+# if the empty space is in the third column, we cannot move left
+
+def move_up(puzzle):
+    for row in range(len(puzzle)):
+        for col in range(len(puzzle[row])):
+            if puzzle[row][col] == 0:
+                if row == 2:
+                    return False
+                else:
+                    puzzle[row][col] = puzzle[row + 1][col]
+                    puzzle[row + 1][col] = 0
+                    return True
+
+def move_left(puzzle):
+    for row in range(len(puzzle)):
+        for col in range(len(puzzle[row])):
+            if puzzle[row][col] == 0:
+                if col == 2:
+                    return False
+                else:
+                    puzzle[row][col] = puzzle[row][col + 1]
+                    puzzle[row][col + 1] = 0
+                    return True
+
+
+
+def move_down(puzzle):
+    for row in range(len(puzzle)):
+        for col in range(len(puzzle[row])):
+            if puzzle[row][col] == 0:
+                if row == 0:
+                    return False
+                else:
+                    puzzle[row][col] = puzzle[row - 1][col]
+                    puzzle[row - 1][col] = 0
+                    return True
+
+
+def move_right(puzzle):
+    for row in range(len(puzzle)):
+        for col in range(len(puzzle[row])):
+            if puzzle[row][col] == 0:
+                if col == 0:
+                    return False
+                else:
+                    puzzle[row][col] = puzzle[row][col - 1]
+                    puzzle[row][col - 1] = 0
+                    return True
 
 
 def BFS(puzzle):
@@ -40,34 +95,44 @@ def BFS(puzzle):
     Return:
     final_solution: An ordered list of moves representing the final solution.
     """
-
-    final_solution = []
-
-    # TODO: WRITE CODE
-
-    # keep track of the nodes we have not explored
-    unexplored_nodes = [puzzle]
-
-    print(unexplored_nodes)
-    puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
-    unexplored_nodes.append(puzzle)
-    print(unexplored_nodes)
-
-    # keep track of the nodes we have explored
+    # keep track of the nodes we have and have not explored
+    unexplored_nodes = deque([(puzzle, [])])
     explored_nodes = []
+    goal_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
 
-    # in BFS we prioritize exploring the siblings of nodes over exploring their
-    # children
-    # we explore siblings in the order: UP, DOWN, LEFT, RIGHT
+    while unexplored_nodes:
+        node, path = unexplored_nodes.popleft()
 
-    # add UP, DOWN, LEFT, RIGHT nodes to unexplored_node list
-    # go into UP, add its children to the queue
-    # go into DOWN, add its children to the queue
-    # go into LEFT, add its children to the queue
-    # go into RIGHT, add its children to the queue
+        if node == goal_state:
+            return path
 
-    return final_solution
+        explored_nodes.append(node)
 
+        # add UP to queue
+        temp1 = deepcopy(node)
+        if move_up(temp1):
+            if temp1 not in explored_nodes:
+                unexplored_nodes.append((temp1, path + [0]))
+
+        # add LEFT to queue
+        temp2 = deepcopy(node)
+        if move_left(temp2):
+            if temp2 not in explored_nodes:
+                unexplored_nodes.append((temp2, path + [1]))
+
+        # add DOWN to queue
+        temp3 = deepcopy(node)
+        if move_down(temp3):
+            if temp3 not in explored_nodes:
+                unexplored_nodes.append((temp3, path + [2]))
+
+        # add RIGHT to queue
+        temp4 = deepcopy(node)
+        if move_right(temp4):
+            if temp4 not in explored_nodes:
+                unexplored_nodes.append((temp4, path + [3]))
+
+    return []
 
 def DFS(puzzle):
     """
@@ -79,10 +144,48 @@ def DFS(puzzle):
     Return:
     final_solution: An ordered list of moves representing the final solution.
     """
-
     final_solution = []
 
-    # TODO: WRITE CODE
+    # keep track of the nodes we have and have not explored
+    unexplored_nodes = [(puzzle, [])]
+    explored_nodes = []
+    goal_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+
+    i = 0
+    while unexplored_nodes:
+        node, path = unexplored_nodes.pop()
+
+        if node == goal_state:
+            return path
+
+        explored_nodes.append(node)
+
+        # add RIGHT to queue
+        temp4 = deepcopy(node)
+        if move_right(temp4):
+            if temp4 not in explored_nodes:
+                unexplored_nodes.append((temp4, path + [3]))
+
+        # add DOWN to queue
+        temp3 = deepcopy(node)
+        if move_down(temp3):
+            if temp3 not in explored_nodes:
+                unexplored_nodes.append((temp3, path + [2]))
+
+        # add LEFT to queue
+        temp2 = deepcopy(node)
+        if move_left(temp2):
+            if temp2 not in explored_nodes:
+                unexplored_nodes.append((temp2, path + [1]))
+
+        # add UP to queue
+        temp1 = deepcopy(node)
+        if move_up(temp1):
+            if temp1 not in explored_nodes:
+                unexplored_nodes.append((temp1, path + [0]))
+
+        print(node)
+        i += 1
 
     return final_solution
 
