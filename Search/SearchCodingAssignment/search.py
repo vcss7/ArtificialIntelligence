@@ -1,3 +1,4 @@
+from collections import deque
 from copy import deepcopy
 from queue import PriorityQueue
 
@@ -35,9 +36,8 @@ def format_puzzle(puzzle):
 
 def shift_tile(puzzle, direction):
     """
-    Takes a puzzle and shifts the tile in the specified direction.
-    When a direction value is one, the tile is shifted in that direction.
-    Only one direction value can be one at a time.
+    Takes a puzzle and shift a tile in the specified diection. If the tile
+    cannot be shifted in the specified direction, the puzzle is not changed.
 
     Arguments:
         puzzle: Node object representing initial state of the puzzle
@@ -81,9 +81,8 @@ def shift_tile(puzzle, direction):
 def BFS(puzzle):
     """
     Breadth-First Search.
-    A queue is used to store the nodes to be expanded. Breadth-First Search
-    appends the children of the current node to the end of the queue and 
-    expands the first node in the queue.
+    Store nodes to be expanded in a queue. Add children of the current node to
+    the end of the queue and expand the first node in the queue. FIFO.
 
     Arguments:
         puzzle: Node object representing initial state of the puzzle
@@ -94,8 +93,9 @@ def BFS(puzzle):
     # initial state of the puzzle
     initial_node = format_puzzle(puzzle)
 
-    # queue to store nodes to be expanded and their path
+    # store nodes to be expanded and their path
     queue = []
+    queue.append((initial_node, []))
 
     # list to store nodes that have been expanded
     expanded = []
@@ -103,19 +103,14 @@ def BFS(puzzle):
     # list to store the path to the solution
     final_solution = []
 
-    # add initial node to queue
-    queue.append((initial_node, []))
-
     # while queue is not empty
     while queue:
         node, path = queue.pop(0)
         
-        # if node is GOAL_STATE
         if node == GOAL_STATE:
             final_solution = path
             break
 
-        # if node has not been expanded
         if node not in expanded:
             # add node to expanded
             expanded.append(node)
@@ -132,6 +127,8 @@ def BFS(puzzle):
 def DFS(puzzle):
     """
     Depth-First Search.
+    Store nodes to be expanded in a queue. Add children of the current node to
+    the front of the queue and expand the first node in the queue. LIFO.
 
     Arguments:
         puzzle: Node object representing initial state of the puzzle
@@ -139,15 +136,44 @@ def DFS(puzzle):
     Return:
         final_solution: An ordered list of moves representing the final solution.
     """
+    return []
+    # initial state of the puzzle
+    initial_node = format_puzzle(puzzle)
+    
+    # queue to store nodes to be expanded and their path
+    queue = deque()
+    queue.append((initial_node, []))
+    
+    # list to store nodes that have been expanded
+    expanded = []
 
+    # list to store the path to the solution
     final_solution = []
+
+    # while queue is not empty
+    while queue:
+        node, path = queue.popleft()
+
+        if node == GOAL_STATE:
+            final_solution = path
+            break
+
+        if node not in expanded:
+            # add node to expanded
+            expanded.append(node)
+
+            # add children of node to queue
+            for direction in reversed(range(4)):
+                child = deepcopy(node)
+                if shift_tile(child, direction):
+                    queue.insert(0, (child, path + [direction]))
 
     return final_solution
 
 
 def A_Star_H1(puzzle):
     """
-    A-Star with Heuristic 1
+    A-Star with number of misplaced tiles as the heuristic function.
 
     Arguments:
         puzzle: Node object representing initial state of the puzzle
@@ -180,6 +206,7 @@ def A_Star_H1(puzzle):
 
     # Priority Queue to store nodes to expand, their path, and their heuristic value
     queue = PriorityQueue()
+    queue.put((find_num_tiles_misplaced(initial_node), (initial_node, [])))
 
     # list to store nodes that have been expanded
     expanded = []
@@ -187,19 +214,14 @@ def A_Star_H1(puzzle):
     # list to store the path to the solution
     final_solution = []
 
-    # add initial node to Priority Queue
-    queue.put((find_num_tiles_misplaced(initial_node), (initial_node, [])))
-
     # while queue is not empty
     while queue:
         node, path = queue.get()[1]
         
-        # if node is GOAL_STATE
         if node == GOAL_STATE:
             final_solution = path
             break
 
-        # if node has not been expanded
         if node not in expanded:
             # add node to expanded
             expanded.append(node)
@@ -215,7 +237,7 @@ def A_Star_H1(puzzle):
 
 def A_Star_H2(puzzle):
     """
-    A-Star with Heauristic 2
+    A-Star with manhattan distance as the heuristic function.
 
     Arguments:
         puzzle: Node object representing initial state of the puzzle
@@ -234,7 +256,6 @@ def A_Star_H2(puzzle):
         Return:
             manhattan_distance: the sum of the manhattan distances of each tile.
         """
-        
         manhattan_distance = 0
 
         for row in range(len(puzzle)):
@@ -251,6 +272,7 @@ def A_Star_H2(puzzle):
 
     # Priority Queue to store nodes to expand, their path, and their heuristic value
     queue = PriorityQueue()
+    queue.put((find_manhattan_distance(initial_node), (initial_node, [])))
 
     # list to store nodes that have been expanded
     expanded = []
@@ -258,19 +280,14 @@ def A_Star_H2(puzzle):
     # list to store the path to the solution
     final_solution = []
 
-    # add initial node to Priority queue
-    queue.put((find_manhattan_distance(initial_node), (initial_node, [])))
-
     # while queue is not empty
     while queue:
         node, path = queue.get()[1]
 
-        # if node is GOAL_STATE
         if node == GOAL_STATE:
             final_solution = path
             break
 
-        # if node has not been expanded
         if node not in expanded:
             # add node to expanded
             expanded.append(node)
