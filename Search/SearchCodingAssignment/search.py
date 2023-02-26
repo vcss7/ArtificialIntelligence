@@ -1,3 +1,6 @@
+from copy import deepcopy
+from queue import PriorityQueue
+
 # ENUMS
 UP = 0
 LEFT = 1
@@ -30,7 +33,7 @@ def format_puzzle(puzzle):
     return formatted_puzzle
 
 
-def shift_tile(puzzle, up=0, left=0, down=0, right=0):
+def shift_tile(puzzle, direction):
     """
     Takes a puzzle and shifts the tile in the specified direction.
     When a direction value is one, the tile is shifted in that direction.
@@ -38,44 +41,39 @@ def shift_tile(puzzle, up=0, left=0, down=0, right=0):
 
     Arguments:
         puzzle: Node object representing initial state of the puzzle
-        up: True if tile should be shifted up, False otherwise
-        left: True if tile should be shifted left, False otherwise
-        down: True if tile should be shifted down, False otherwise
-        right: True if tile should be shifted right, False otherwise
+        direction: Integer representing the direction to shift the tile using
+            the following ENUMS defined at the beginning of the this file
 
     Return:
         True if tile was shifted, False otherwise
     """
-
     max_row = len(puzzle) - 1
     max_col = len(puzzle[0]) - 1
 
-    if up + left + down + right == 1:
-
-        # find location of the zero tile
-        for row in ranger(max_row + 1):
-            for col in range(max_col + 1):
-                if puzzle[row][col] == 0:
-                    zero_row = row
-                    zero_col = col
-        
-        # shift tile 
-        if up and zero_row < max_row:
-            puzzle[zero_row][zero_col] = puzzle[zero_row + 1][zero_col]
-            puzzle[zero_row + 1][zero_col] = 0
-            return True
-        elif left and zero_col < max_col:
-            puzzle[zero_row][zero_col] = puzzle[zero_row][zero_col + 1]
-            puzzle[zero_row][zero_col + 1] = 0
-            return True
-        elif down and zero_row > 0:
-            puzzle[zero_row][zero_col] = puzzle[zero_row - 1][zero_col]
-            puzzle[zero_row - 1][zero_col] = 0
-            return True
-        elif right and zero_col > 0:
-            puzzle[zero_row][zero_col] = puzzle[zero_row][zero_col - 1]
-            puzzle[zero_row][zero_col - 1] = 0
-            return True
+    # find location of the zero tile
+    for row in range(max_row + 1):
+        for col in range(max_col + 1):
+            if puzzle[row][col] == 0:
+                zero_row = row
+                zero_col = col
+    
+    # shift tile in specified direction
+    if direction == UP and zero_row < max_row:
+        puzzle[zero_row][zero_col] = puzzle[zero_row + 1][zero_col]
+        puzzle[zero_row + 1][zero_col] = 0
+        return True
+    elif direction == LEFT and zero_col < max_col:
+        puzzle[zero_row][zero_col] = puzzle[zero_row][zero_col + 1]
+        puzzle[zero_row][zero_col + 1] = 0
+        return True
+    elif direction == DOWN and zero_row > 0:
+        puzzle[zero_row][zero_col] = puzzle[zero_row - 1][zero_col]
+        puzzle[zero_row - 1][zero_col] = 0
+        return True
+    elif direction == RIGHT and zero_col > 0:
+        puzzle[zero_row][zero_col] = puzzle[zero_row][zero_col - 1]
+        puzzle[zero_row][zero_col - 1] = 0
+        return True
 
     return False
 
@@ -83,6 +81,9 @@ def shift_tile(puzzle, up=0, left=0, down=0, right=0):
 def BFS(puzzle):
     """
     Breadth-First Search.
+    A queue is used to store the nodes to be expanded. Breadth-First Search
+    appends the children of the current node to the end of the queue and 
+    expands the first node in the queue.
 
     Arguments:
         puzzle: Node object representing initial state of the puzzle
@@ -90,10 +91,40 @@ def BFS(puzzle):
     Return:
         final_solution: An ordered list of moves representing the final solution.
     """
+    # initial state of the puzzle
+    initial_node = format_puzzle(puzzle)
 
-    formatted_puzzle = format_puzzle(puzzle)
+    # queue to store nodes to be expanded and their path
+    queue = []
 
+    # list to store nodes that have been expanded
+    expanded = []
+
+    # list to store the path to the solution
     final_solution = []
+
+    # add initial node to queue
+    queue.append((initial_node, []))
+
+    # while queue is not empty
+    while queue:
+        node, path = queue.pop(0)
+        
+        # if node is GOAL_STATE
+        if node == GOAL_STATE:
+            final_solution = path
+            break
+
+        # if node has not been expanded
+        if node not in expanded:
+            # add node to expanded
+            expanded.append(node)
+
+            # add children of node to queue
+            for direction in range(4):
+                child = deepcopy(node)
+                if shift_tile(child, direction):
+                    queue.append((child, path + [direction]))
 
     return final_solution
 
@@ -126,9 +157,58 @@ def A_Star_H1(puzzle):
     """
 
     def find_num_tiles_misplaced(puzzle):
-        pass
+        """
+        Finds the number of tiles that are misplaced in the puzzle.
 
+        Arguments:
+            puzzle: Node object representing a state of the puzzle
+
+        Return:
+            num_tiles_misplaced: the number of tiles that are misplaced.
+        """
+        num_tiles_misplaced = 0
+
+        for row in range(len(puzzle)):
+            for col in range(len(puzzle[0])):
+                if puzzle[row][col] != GOAL_STATE[row][col]:
+                    num_tiles_misplaced += 1
+
+        return num_tiles_misplaced
+
+    # initial state of the puzzle
+    initial_node = format_puzzle(puzzle)
+
+    # Priority Queue to store nodes to expand, their path, and their heuristic value
+    queue = PriorityQueue()
+
+    # list to store nodes that have been expanded
+    expanded = []
+
+    # list to store the path to the solution
     final_solution = []
+
+    # add initial node to Priority Queue
+    queue.put((find_num_tiles_misplaced(initial_node), (initial_node, [])))
+
+    # while queue is not empty
+    while queue:
+        node, path = queue.get()[1]
+        
+        # if node is GOAL_STATE
+        if node == GOAL_STATE:
+            final_solution = path
+            break
+
+        # if node has not been expanded
+        if node not in expanded:
+            # add node to expanded
+            expanded.append(node)
+
+            # add children of node to queue
+            for direction in range(4):
+                child = deepcopy(node)
+                if shift_tile(child, direction):
+                    queue.put((find_num_tiles_misplaced(child), (child, path + [direction])))
 
     return final_solution
 
