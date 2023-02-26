@@ -1,5 +1,6 @@
 from collections import deque
 from copy import deepcopy
+from time import sleep
 from queue import PriorityQueue
 
 # ENUMS
@@ -217,6 +218,11 @@ def A_Star_H1(puzzle):
     # while queue is not empty
     while queue:
         node, path = queue.get()[1]
+
+        sleep(1)
+        for row in node:
+            print(row)
+        print()
         
         if node == GOAL_STATE:
             final_solution = path
