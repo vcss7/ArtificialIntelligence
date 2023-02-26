@@ -225,8 +225,59 @@ def A_Star_H2(puzzle):
     """
 
     def find_manhattan_distance(puzzle):
-        pass
+        """
+        Finds the manhattan distance of each of the tiles in the puzzle.
 
+        Arguments:
+            puzzle: Node object representing a state of the puzzle
+
+        Return:
+            manhattan_distance: the sum of the manhattan distances of each tile.
+        """
+        
+        manhattan_distance = 0
+
+        for row in range(len(puzzle)):
+            for col in range(len(puzzle[0])):
+                if puzzle[row][col] != 0:
+                    expected_row = (puzzle[row][col] - 1) // len(puzzle[0])
+                    expected_col = (puzzle[row][col] - 1) % len(puzzle[0])
+                    manhattan_distance += abs(expected_row - row) + abs(expected_col - col)
+
+        return manhattan_distance
+
+    # initial state of the puzzle
+    initial_node = format_puzzle(puzzle)
+
+    # Priority Queue to store nodes to expand, their path, and their heuristic value
+    queue = PriorityQueue()
+
+    # list to store nodes that have been expanded
+    expanded = []
+
+    # list to store the path to the solution
     final_solution = []
+
+    # add initial node to Priority queue
+    queue.put((find_manhattan_distance(initial_node), (initial_node, [])))
+
+    # while queue is not empty
+    while queue:
+        node, path = queue.get()[1]
+
+        # if node is GOAL_STATE
+        if node == GOAL_STATE:
+            final_solution = path
+            break
+
+        # if node has not been expanded
+        if node not in expanded:
+            # add node to expanded
+            expanded.append(node)
+            # add children of node to Queue
+            for direction in range(4):
+                child = deepcopy(node)
+                if shift_tile(child, direction):
+                    queue.put((find_manhattan_distance(child), (child, path + [direction])))
 
     return final_solution
