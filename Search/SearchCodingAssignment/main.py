@@ -32,10 +32,7 @@ def read_puzzle(filename):
         puzzle = []
         with open(filename, "r") as f:
             for line in f.readlines():
-                row = []
-                for element in line.split():
-                    row.append(int(element))
-                puzzle.append(row)
+                puzzle.append(line.split(' '))
 
         return puzzle
 
