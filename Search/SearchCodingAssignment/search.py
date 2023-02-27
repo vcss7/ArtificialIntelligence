@@ -1,5 +1,6 @@
 from collections import deque
 from copy import deepcopy
+import time
 from queue import PriorityQueue
 
 # ENUMS
@@ -56,7 +57,7 @@ def shift_tile(puzzle, direction):
             if puzzle[row][col] == 0:
                 zero_row = row
                 zero_col = col
-    
+
     # shift tile in specified direction
     if direction == UP and zero_row < max_row:
         puzzle[zero_row][zero_col] = puzzle[zero_row + 1][zero_col]
@@ -90,12 +91,14 @@ def BFS(puzzle):
     Return:
         final_solution: An ordered list of moves representing the final solution.
     """
+    # start timer
+    start_time = time.time()
     # initial state of the puzzle
     initial_node = format_puzzle(puzzle)
 
-    # store nodes to be expanded and their path
-    queue = []
-    queue.append((initial_node, []))
+    # queue to store nodes, their parent, and the direction they were moved
+    queue = deque()
+    queue.append((initial_node, None, None))
 
     # list to store nodes that have been expanded
     expanded = []
@@ -105,10 +108,14 @@ def BFS(puzzle):
 
     # while queue is not empty
     while queue:
-        node, path = queue.pop(0)
-        
+        node, parent, direction = queue.popleft()
+
         if node == GOAL_STATE:
-            final_solution = path
+            final_solution = []
+            # backtrack to find path to solution
+            while parent:
+                final_solution.insert(0, direction)
+                node, parent, direction = parent
             break
 
         if node not in expanded:
@@ -116,11 +123,12 @@ def BFS(puzzle):
             expanded.append(node)
 
             # add children of node to queue
-            for direction in range(4):
+            for shift_direction in range(4):
                 child = deepcopy(node)
-                if shift_tile(child, direction):
-                    queue.append((child, path + [direction]))
+                if shift_tile(child, shift_direction):
+                    queue.append((child, (node, parent, direction), shift_direction))
 
+    print("BFS took %s seconds" % (time.time() - start_time))
     return final_solution
 
 
@@ -136,14 +144,16 @@ def DFS(puzzle):
     Return:
         final_solution: An ordered list of moves representing the final solution.
     """
-    return []
+    # start timer
+    start_time = time.time()
+
     # initial state of the puzzle
     initial_node = format_puzzle(puzzle)
-    
-    # queue to store nodes to be expanded and their path
+
+    # queue to store nodes, their parent, and the direction they were moved
     queue = deque()
-    queue.append((initial_node, []))
-    
+    queue.append((initial_node, None, None))
+
     # list to store nodes that have been expanded
     expanded = []
 
@@ -152,10 +162,14 @@ def DFS(puzzle):
 
     # while queue is not empty
     while queue:
-        node, path = queue.popleft()
+        node, parent, direction = queue.popleft()
 
         if node == GOAL_STATE:
-            final_solution = path
+            final_solution = []
+            # backtrack to find path to solution
+            while parent:
+                final_solution.insert(0, direction)
+                node, parent, direction = parent
             break
 
         if node not in expanded:
@@ -163,11 +177,12 @@ def DFS(puzzle):
             expanded.append(node)
 
             # add children of node to queue
-            for direction in reversed(range(4)):
+            for shift_direction in reversed(range(4)):
                 child = deepcopy(node)
-                if shift_tile(child, direction):
-                    queue.insert(0, (child, path + [direction]))
+                if shift_tile(child, shift_direction):
+                    queue.appendleft((child, (node, parent, direction), shift_direction))
 
+    print("DFS took %s seconds" % (time.time() - start_time))
     return final_solution
 
 
@@ -201,12 +216,15 @@ def A_Star_H1(puzzle):
 
         return num_tiles_misplaced
 
+    # start timer
+    start_time = time.time()
+
     # initial state of the puzzle
     initial_node = format_puzzle(puzzle)
 
-    # Priority Queue to store nodes to expand, their path, and their heuristic value
+    # Priority queue to store nodes, their parent, and the direction they were moved
     queue = PriorityQueue()
-    queue.put((find_num_tiles_misplaced(initial_node), (initial_node, [])))
+    queue.put((find_num_tiles_misplaced(initial_node), (initial_node, None, None)))
 
     # list to store nodes that have been expanded
     expanded = []
@@ -216,10 +234,14 @@ def A_Star_H1(puzzle):
 
     # while queue is not empty
     while queue:
-        node, path = queue.get()[1]
-        
+        _, (node, parent, direction) = queue.get()
+
         if node == GOAL_STATE:
-            final_solution = path
+            final_solution = []
+            # backtrack to find path to solution
+            while parent:
+                final_solution.insert(0, direction)
+                node, parent, direction = parent
             break
 
         if node not in expanded:
@@ -227,11 +249,12 @@ def A_Star_H1(puzzle):
             expanded.append(node)
 
             # add children of node to queue
-            for direction in range(4):
+            for shift_direction in range(4):
                 child = deepcopy(node)
-                if shift_tile(child, direction):
-                    queue.put((find_num_tiles_misplaced(child), (child, path + [direction])))
+                if shift_tile(child, shift_direction):
+                    queue.put((find_num_tiles_misplaced(child), (child, (node, parent, direction), shift_direction)))
 
+    print("A-Star with H1 took %s seconds" % (time.time() - start_time))
     return final_solution
 
 
@@ -267,6 +290,9 @@ def A_Star_H2(puzzle):
 
         return manhattan_distance
 
+    # start timer
+    start_time = time.time()
+
     # initial state of the puzzle
     initial_node = format_puzzle(puzzle)
 
@@ -297,4 +323,5 @@ def A_Star_H2(puzzle):
                 if shift_tile(child, direction):
                     queue.put((find_manhattan_distance(child), (child, path + [direction])))
 
+    print("A-Star with H2 took %s seconds" % (time.time() - start_time))
     return final_solution
