@@ -1,0 +1,478 @@
+\documentclass[11pt]{article}
+
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[margin=1.0in]{geometry}
+\usepackage[none]{hyphenat}
+\usepackage{amsfonts,amsmath,amssymb}
+\usepackage{fancyhdr}
+\usepackage{soul}
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+
+\thispagestyle{fancy}
+\headheight14pt
+\fancyhead{}
+\fancyhead[L]{\slshape\MakeUppercase{\large Assignment-01: Search}}
+\fancyhead[R]{\large \slshape Victor Solis | \today}
+
+\begin{document}
+\begin{flushleft}
+Artificial intelligence assignment 1; practicing basic and informed search 
+algorithms.
+
+\section*{Game of Chess}
+
+\subsection*{Problem}
+Consider the game of Chess (https://en.wikipedia.org/wiki/Chess). Approximately,
+how many different states can a chess game have? You may assume
+
+\begin{enumerate}
+    \item We do not consider pawn promotion
+    \item We consider each pawn is a distinct piece
+    \item We consider only states with no captured pieces, i.e. all states will
+        have 32 pieces
+    \item We do not consider pawn promotion, castling, or any other special
+        cases.
+\end{enumerate}
+
+State any other assumptions made and show your work. Your answer does not have 
+to be mathematically correct, but should be in the right magnitude for the 
+assumptions you have made and make sense based on your math.
+
+\subsection*{Answer}
+
+Additional assumtions will be:
+\begin{enumerate}
+    \item Pawns can not exist in the 1\textsuperscript{st} or 
+        8\textsuperscript{th} rank
+    \item Pawns can not stack (i.e. two of the same colored pawns cannot be on
+        the same column)
+    \item Black/White have one bishop that resides in the black tiles and
+        one bishop that resides on the white tiles
+    \item How the position came to be is not relevent
+    \item Kings can be within one tile of eachother
+\end{enumerate}
+We will start by calculating the number of possible positions of the pieces
+which do not have tile restrictions. Then, we will place the pieces that do have
+possible restriction; that is, the bishops and pawns.
+
+First we start with a single rook. Without any other pieces on the board, it has
+64 possible positions it can exists on.
+
+Then, we go to a second rook. Since one of the tiles is occupied by the first
+placed rook, the second rook only has 63 possible tiles ot exist on.
+
+Similarilly, the third rook will only have 62 tiles that it can possible exist
+on.
+
+At this stage, we can recognize a pattern: As tiles get occupied by previous
+    pieces, the number of available tiles reduces by one.
+
+The number of states the pieces (minus the pawns and bishops) can be represented
+by the following product series.
+\begin{equation}
+    s_{tot1} = \prod_{i = 0}^{p - 1} (64 - i)
+\end{equation}
+Where $s_{tot1}$ are the total number of possible states for the pieces without
+tiles restrictions and $p$ is the number of pieces placed.
+
+There are a total of 12 chess pieces without the pawns and bishops.
+Therefore,
+\begin{equation}
+    s_{tot1} = \prod_{i = 0}^{11} (64 - i) = 64 * 63 * ... * 53 \approx 1.573 *
+    10^{21}
+\end{equation}
+
+Now, we must place the pawns and bishops.
+
+The pawns are restricted from the 2\textsuperscript{nd} to the
+7\textsuperscript{th} rank and to one of the columns.
+
+This gives each of the pawns 6 tiles to exist on. That means, without any
+obstructions, pawns can have a total of
+\begin{equation}
+    s_{tot2} = 6^{8} + 5^{8} \approx 2.07 * 10^{6}
+\end{equation}
+where $s_{tot2}$ is the total number of states for the pawns. Note: we will not
+filter out states where other pieces are occupying all possible tiles in a
+pawn's column since this is negligible considering the magnitude of number in
+Equation $2$.
+
+The bishops are each restricted to either the white or the black tiles. This
+gives each of the bishops 32 tiles to exist on. That means, without any
+other pieces taking any tiles from the bishops, we can have a total of
+\begin{equation}
+    s_{tot3} = 32^{2} + 31^{2} \approx 9.84 * 10^{5}
+\end{equation}
+The results from Equations $3$ and $4$ are very negligible compared to the
+result from Equation $2$.
+
+We can then say there will be approxamilly \ul{$1.573 * 10^{21}$ possible
+states} of the chess position given the initial restrictions.
+
+
+\hspace{1cm}
+\hrule
+\section*{Wolf, Goat, and Cabbage Problem}
+
+\subsection*{Problem}
+A farmer has just bought a wolf, a goat, and a cabbage. They must cross the
+river to get home, but their small rowboat can only carry the farmer and 1
+animal or vegetable at a time. However, the farmer cannot leave the goat
+unsupervised with the cabbage, or the goat will eat the cabbage. Similarly,
+the farmer cannot leave the goat unsupervised with the wolf, or the wolf
+will eat the goat. Draw the full search space starting from the initial
+state below. Indicate with different colors or labels which states would
+not be further explored because something gets eaten, as well as which
+states would not be further explored because they are repeats of previous
+states (to avoid cycles)
+%%% TODO: Add Initial State and Goal State inage
+\tikzstyle{staterunning}=[fill=white, draw=black, shape=circle split, radius=1cm]
+
+\begin{center}
+    \begin{tikzpicture}
+            \node [style=staterunning] (0) at (-2.25, 2) {*WGC};
+            \node [style=staterunning] (1) at (2.25, 2) {\nodepart{lower}*WGC};
+            \node (2) at (-2.25, 3.25) {Initial State};
+            \node (3) at (2.25, 3.25) {Goal State};
+    \end{tikzpicture}
+\end{center}
+
+
+\subsection*{Answer}
+
+Here is the full search space where $*$ represents the farmer, W represents the
+wolf, G represents the goat, C represents the cabbage. In the transitions, the
+letter shown next to the edge is the animal or vegetable crossing the river; the
+$*$ alone is the farmer crossing the river on his own.
+
+\tikzstyle{none}=[]
+\tikzstyle{runningstate}=[fill=white, draw=black, shape=circle split, radius=1cm]
+\tikzstyle{deadstate}=[fill={rgb,255: red,255; green,103; blue,103}, draw=black, shape=circle split, radius=1]
+\tikzstyle{accepted}=[fill={rgb,255: red,0; green,200; blue,0}, draw=black, shape=circle split, radius=1cm]
+
+% Edge styles
+\tikzstyle{deadarrow}=[fill=none, ->, draw={rgb,255: red,255; green,103; blue,103}, thick]
+\tikzstyle{acceptedarrow}=[fill=none, ->, draw={rgb,255: red,0; green,200; blue,0}, thick]
+\tikzstyle{doublearrow}=[<->, thick]
+
+\begin{center}
+    \begin{tikzpicture}
+            \node [style=runningstate] (0) at (0, 4) {*WGC};
+            \node [style=deadstate] (1) at (-3, 3) {GC\nodepart{lower}*W};
+            \node [style=deadstate] (2) at (3, 3) {WG\nodepart{lower}*C};
+            \node [style=runningstate] (3) at (0, 1) {WC\nodepart{lower}*G};
+            \node [style=none] (4) at (0.5, 2.5) {G};
+            \node [style=none] (5) at (1.75, 3.75) {C};
+            \node [style=none] (6) at (-1.75, 3.75) {W};
+            \node [style=runningstate] (7) at (0, -2) {*WC\nodepart{lower}G};
+            \node [style=none] (8) at (0.5, -0.5) {*};
+            \node [style=runningstate] (9) at (-3, -3) {C\nodepart{lower}*WG};
+            \node [style=none] (10) at (-1.75, -2.25) {W};
+            \node [style=runningstate] (11) at (3, -3) {W\nodepart{lower}*GC};
+            \node [style=none] (12) at (1.75, -2) {C};
+            \node [style=deadstate] (13) at (-6, -4) {*C\nodepart{lower}WG};
+            \node [style=runningstate] (14) at (-3, -6) {*GC\nodepart{lower}W};
+            \node [style=none] (15) at (-4.5, -3.25) {*};
+            \node [style=none] (16) at (-2.5, -4.5) {G};
+            \node [style=runningstate] (17) at (3, -6) {*WG\nodepart{lower}C};
+            \node [style=deadstate] (18) at (6, -4) {*W\nodepart{lower}GC};
+            \node [style=none] (19) at (4.75, -3.25) {*};
+            \node [style=none] (20) at (2.5, -4.5) {G};
+            \node [style=deadstate] (21) at (-6, -7) {GC\nodepart{lower}*W};
+            \node [style=runningstate] (23) at (0, -7) {G\nodepart{lower}*WC};
+            \node [style=deadstate] (24) at (6, -7) {WG\nodepart{lower}*C};
+            \node [style=none] (25) at (-4.75, -6.25) {*};
+            \node [style=none] (26) at (4.75, -6.25) {*};
+            \node [style=none] (27) at (-1.25, -6.25) {C};
+            \node [style=none] (28) at (1, -6.25) {W};
+            \node [style=runningstate] (29) at (0, -10) {*G\nodepart{lower}WC};
+            \node [style=accepted] (30) at (0, -13) {\nodepart{lower}*WGC};
+            \node [style=none] (31) at (0.5, -8.5) {*};
+            \node [style=none] (32) at (0.5, -11.5) {G};
+            \draw [style=doublearrow] (0) to (3);
+            \draw [style=deadarrow] (0) to (2);
+            \draw [style=deadarrow] (0) to (1);
+            \draw [style=doublearrow] (3) to (7);
+            \draw [style=doublearrow] (7) to (9);
+            \draw [style=doublearrow] (7) to (11);
+            \draw [style=deadarrow] (9) to (13);
+            \draw [style=doublearrow] (9) to (14);
+            \draw [style=deadarrow, in=165, out=-15] (11) to (18);
+            \draw [style=doublearrow] (11) to (17);
+            \draw [style=deadarrow] (17) to (24);
+            \draw [style=deadarrow] (14) to (21);
+            \draw [style=doublearrow] (17) to (23);
+            \draw [style=doublearrow] (14) to (23);
+            \draw [style=doublearrow] (23) to (29);
+            \draw [style=acceptedarrow] (29) to (30);
+    \end{tikzpicture}
+\end{center}
+
+\hspace{1cm}
+\hrule
+\section*{Search Algorithms on a State Space Graph}
+
+\subsection*{Problem}
+Consider the following state space graph with Initial State S and Goal State G
+
+\begin{enumerate}
+    \item Draw out the complete search tree, ignoring cycles by not allowing
+        the same node in the path more than once. The tree has been started
+        below to show formatting.
+    \item List the Node exploration order for a Breadth First Search. For
+        grading simplicity, when there is a tie, explore the nodes
+        alphabetically.
+    \item List the Node exploration order for a Depth First Search. For grading
+        simplicity, when there is a tie, explore the nodes alphabetically.
+    \item The table below shows the estimated distance from each node to the
+        goal. Using these as the heuristic h(n), list the Node exploration
+        order for a Best-First Search. For grading simplicity, when there is a
+        tie, explore the
+    \item Using the same table as the heuristic h(n), list the A* Node
+        exploration order. For grading simplicity, when there is a tie, explore
+        the nodes alphabetically. nodes alphabetically.
+\end{enumerate}
+
+\subsection*{Answer}
+
+% Node styles
+\tikzstyle{rect}=[fill=white, draw=black, shape=rectangle]
+\tikzstyle{startnode}=[fill=white, draw=blue, shape=rectangle]
+
+% Edge styles
+\tikzstyle{arrow}=[thick, ->]
+
+\begin{enumerate}
+    \item Complete search tree without repeating nodes. Tree starting at
+        S.\\
+
+        \begin{flushleft}
+        \resizebox{40em}{25em}{
+            \begin{tikzpicture}
+                \node [style=startnode] (0) at (0, 7) {S};
+                \node [style=rect] (1) at (-2, 7) {SA};
+                \node [style=rect] (2) at (0, 5.25) {SB};
+                \node [style=rect] (3) at (2, 7) {SC};
+                \node [style=rect] (4) at (0, 8.5) {SF};
+                \node [style=rect] (6) at (-3.25, 8) {SAD};
+                \node [style=rect] (8) at (0.5, 3.5) {SBE};
+                \node [style=rect] (9) at (1.75, 5) {SBG};
+                \node [style=rect] (10) at (-2, 5) {SAC};
+                \node [style=rect] (11) at (-3.25, 9.5) {SADB};
+                \node [style=rect] (12) at (-5.25, 8) {SADC};
+                \node [style=rect] (13) at (-5, 6.5) {SADF};
+                \node [style=rect] (14) at (-3.5, 5.75) {SADG};
+                \node [style=rect] (15) at (-3.25, 11.25) {SADBE};
+                \node [style=rect] (16) at (-5.25, 10.25) {SADBG};
+                \node [style=rect] (17) at (-7.25, 8) {SADCG};
+                \node [style=rect] (18) at (-3.75, 4.25) {SACD};
+                \node [style=rect] (19) at (-1.25, 3.5) {SACG};
+                \node [style=rect] (20) at (-5.75, 4.75) {SACDB};
+                \node [style=rect] (21) at (-4.75, 2.5) {SACDG};
+                \node [style=rect] (22) at (-2.75, 2.5) {SACDF};
+                \node [style=rect] (23) at (-7.25, 6) {SACDBG};
+                \node [style=rect] (24) at (-7.25, 4) {SACDBE};
+                \node [style=rect] (25) at (-8.75, 3.25) {SACDBEG};
+                \node [style=rect] (26) at (-0.5, 0.75) {SBEG};
+                \node [style=rect] (27) at (3.5, 6) {SCA};
+                \node [style=rect] (28) at (5.5, 7.75) {SCD};
+                \node [style=rect] (29) at (3.25, 8) {SCG};
+                \node [style=rect] (30) at (4.5, 4.5) {SCAD};
+                \node [style=rect] (31) at (2.5, 3.25) {SCADB};
+                \node [style=rect] (32) at (5, 2.5) {SCADF};
+                \node [style=rect] (33) at (6.25, 4) {SCADG};
+                \node [style=rect] (34) at (3.75, 1.75) {SCADBE};
+                \node [style=rect] (35) at (1.5, 2) {SCADBG};
+                \node [style=rect] (36) at (2.25, 0.75) {SCADBEG};
+                \node [style=rect] (37) at (6.25, 6) {SCDB};
+                \node [style=rect] (38) at (8, 8) {SCDF};
+                \node [style=rect] (39) at (6.75, 9.75) {SCDG};
+                \node [style=rect] (40) at (9.25, 6.75) {SCDBE};
+                \node [style=rect] (41) at (8, 4.75) {SCDBG};
+                \node [style=rect] (42) at (10.75, 8.25) {SCDBEG};
+                \node [style=rect] (43) at (0, 10.25) {SFD};
+                \node [style=rect] (44) at (-1, 11.5) {SFDA};
+                \node [style=rect] (45) at (1.5, 11.75) {SFDC};
+                \node [style=rect] (46) at (2.75, 10.5) {SFDB};
+                \node [style=rect] (47) at (1.75, 9) {SFDG};
+                \node [style=rect] (48) at (-2.25, 12.75) {SFDAC};
+                \node [style=rect] (49) at (-0.25, 13.75) {SFDACG};
+                \node [style=rect] (50) at (1.25, 13.25) {SFDCA};
+                \node [style=rect] (51) at (3.25, 12.5) {SFDCG};
+                \node [style=rect] (52) at (5, 11.5) {SFDBE};
+                \node [style=rect] (53) at (4.5, 9.5) {SFDBG};
+                \node [style=rect] (54) at (7, 12.5) {SFDBEG};
+                \draw [style=arrow] (0) to (1);
+                \draw [style=arrow] (0) to (2);
+                \draw [style=arrow] (0) to (3);
+                \draw [style=arrow] (0) to (4);
+                \draw [style=arrow] (1) to (6);
+                \draw [style=arrow] (2) to (8);
+                \draw [style=arrow] (2) to (9);
+                \draw [style=arrow] (1) to (10);
+                \draw [style=arrow] (6) to (11);
+                \draw [style=arrow] (6) to (12);
+                \draw [style=arrow] (6) to (13);
+                \draw [style=arrow] (6) to (14);
+                \draw [style=arrow] (11) to (15);
+                \draw [style=arrow] (11) to (16);
+                \draw [style=arrow] (12) to (17);
+                \draw [style=arrow] (10) to (18);
+                \draw [style=arrow] (10) to (19);
+                \draw [style=arrow] (18) to (20);
+                \draw [style=arrow] (18) to (21);
+                \draw [style=arrow] (18) to (22);
+                \draw [style=arrow] (24) to (25);
+                \draw [style=arrow] (20) to (24);
+                \draw [style=arrow] (20) to (23);
+                \draw [style=arrow] (8) to (26);
+                \draw [style=arrow] (3) to (27);
+                \draw [style=arrow] (3) to (28);
+                \draw [style=arrow] (3) to (29);
+                \draw [style=arrow] (27) to (30);
+                \draw [style=arrow] (30) to (32);
+                \draw [style=arrow] (30) to (33);
+                \draw [style=arrow] (30) to (31);
+                \draw [style=arrow] (31) to (34);
+                \draw [style=arrow] (31) to (35);
+                \draw [style=arrow] (34) to (36);
+                \draw [style=arrow] (28) to (37);
+                \draw [style=arrow] (28) to (38);
+                \draw [style=arrow] (28) to (39);
+                \draw [style=arrow] (37) to (40);
+                \draw [style=arrow] (40) to (42);
+                \draw [style=arrow] (37) to (41);
+                \draw [style=arrow] (4) to (43);
+                \draw [style=arrow] (43) to (44);
+                \draw [style=arrow] (44) to (48);
+                \draw [style=arrow] (48) to (49);
+                \draw [style=arrow] (43) to (45);
+                \draw [style=arrow] (43) to (46);
+                \draw [style=arrow] (43) to (47);
+                \draw [style=arrow] (45) to (50);
+                \draw [style=arrow] (45) to (51);
+                \draw [style=arrow] (46) to (52);
+                \draw [style=arrow] (46) to (53);
+                \draw [style=arrow] (52) to (54);
+            \end{tikzpicture}
+            }
+        \end{flushleft}
+
+    \item Node exploration order for Breadth First Search.\\
+        \begin{tabular}{| c | c | c | c | c | c | c | c | c |}
+            \hline
+            S & SA & SB & SC & SF & SAC & SAD & SBE & SBG \\
+            \hline
+        \end{tabular}
+
+    \item Node exploration order for Depth First Search.\\
+        \begin{tabular}{| c | c | c | c | c | c | c |}
+            \hline
+            S & SA & SAC & SACD & SACDB & SACDBE & SACDBEG  \\
+            \hline
+        \end{tabular}
+
+    \item Node exploration order for Best-First Search.\\
+        \begin{tabular}{| c | c | c |}
+            \hline
+            S & SC & SCG\\
+            \hline
+        \end{tabular}
+
+    \item Node exploration order for A* Search.\\
+        \begin{tabular}{| c | c | c |}
+            \hline
+            S & SC & SCG\\
+            \hline
+        \end{tabular}
+
+\end{enumerate}
+
+
+\hspace{1cm}
+\hrule
+\section*{Search Trees on a Grid}
+
+\subsection*{Poblem}
+Consider the grid below with start state 50 and goal state 49:
+
+Draw the search tree for the following algorithms a-d assuming: 
+\begin{enumerate}
+    \item Black squares are walls that cannot be passed through. 
+    \item Break ties in the order N-E-S-W.
+    \item Each step has a uniform cost.
+    \item The heuristic is the Manhattan distance to the goal. (Don’t count
+        black wall tiles, but for heuristic estimate, go through them)
+\end{enumerate}
+
+\subsection*{Answer}
+\begin{enumerate}
+    \item Breadth-First Search (5 layers). Nodes are search from left to right
+        on each layer.\\
+        \begin{center}
+            \begin{tikzpicture}
+                \node [style=rect] (0) at (2, 9) {50};
+                \node [style=rect] (1) at (2, 8) {60};
+                \node [style=rect] (2) at (1, 7) {61};
+                \node [style=rect] (3) at (3, 7) {70};
+                \node [style=rect] (4) at (-0.25, 6) {62};
+                \node [style=rect] (5) at (1.75, 6) {71};
+                \node [style=rect] (6) at (3.75, 6) {71};
+                \node [style=rect] (7) at (-1.5, 5) {52};
+                \node [style=rect] (8) at (-0.25, 5) {63};
+                \node [style=rect] (9) at (1, 5) {72};
+                \node [style=rect] (10) at (2.5, 5) {72};
+                \node [style=rect] (11) at (4.5, 5) {72};
+                \node [style=rect] (12) at (-3.5, 3.75) {42};
+                \node [style=rect] (13) at (-2, 3.75) {53};
+                \node [style=rect] (14) at (-0.75, 3.75) {53};
+                \node [style=rect] (15) at (0.25, 3.75) {73};
+                \node [style=rect] (16) at (1.25, 3.75) {73};
+                \node [style=rect] (17) at (3.25, 3.75) {73};
+                \node [style=rect] (18) at (5.25, 3.75) {73};
+                \node [style=rect] (19) at (2.25, 3.75) {62};
+                \node [style=rect] (20) at (4.25, 3.75) {62};
+                \draw (0) to (1);
+                \draw [style=arrow] (0) to (1);
+                \draw [style=arrow] (1) to (2);
+                \draw [style=arrow] (1) to (3);
+                \draw [style=arrow] (3) to (6);
+                \draw [style=arrow] (2) to (4);
+                \draw [style=arrow] (2) to (5);
+                \draw [style=arrow] (4) to (7);
+                \draw [style=arrow] (4) to (8);
+                \draw [style=arrow] (4) to (9);
+                \draw [style=arrow] (5) to (10);
+                \draw [style=arrow] (6) to (11);
+                \draw [style=arrow] (7) to (12);
+                \draw [style=arrow] (7) to (13);
+                \draw [style=arrow] (8) to (14);
+                \draw [style=arrow] (8) to (15);
+                \draw [style=arrow] (9) to (16);
+                \draw [style=arrow] (10) to (17);
+                \draw [style=arrow] (11) to (18);
+                \draw [style=arrow] (10) to (19);
+                \draw [style=arrow] (11) to (20);
+            \end{tikzpicture}
+        \end{center}
+
+    \item Depth-First Search. For this problem I will list the nodes visited on
+        a table from left to right since a tree will be ridiculously long.
+        \begin{tabular}{| c | c | c | c | c | c | c | c | c | c | c | c | c | c
+            |}
+            \hline
+            50 & 60 & 61 & 62 & 52 & 42 & 32 & 33 & 23 & 13 & 3 & 4 & 5 & 6\\
+            \hline
+            16 & 26 & 36 & 37 & 38 & 28 & 18 & 8 & 9 & 19 & 29 & 39 & 49&\\
+            \hline
+        \end{tabular}
+
+    \item Beam Search with W=2 (5 layers)
+    \item A*
+    \item What is the optimal path found by A*
+\end{enumerate}
+
+\end{flushleft}
+\end{document}
