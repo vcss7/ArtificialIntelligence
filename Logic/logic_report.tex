@@ -79,35 +79,80 @@ Consider the following statements:
 
 \rule[0.1pt]{40em}{1.0pt}
 
-\section*{2. Vocabulary} First-order logic with consistent vocabulary
+\section*{2. Vocabulary} First-order logic with consistent vocabulary.
 
 Represent the following sentences in first-order logic, using a consistent
     vocabulary (which you must define as well).
 
 \begin{enumerate}
 
-    \item[a.] Define the vocabulary. \textbf{For example}, you might have:
+    \item[a.] Define the vocabulary.
         \begin{enumerate} 
-            \item[i.] Buys(X, Y, Z) = Person X buys Item Y from Person Z.
-            \item[ii.] W > Score(X, Y, Z) = W is larger than score Person X
-                gets in course Y during semester Z.
-            \item[iii.] Predicates: Person(X), Clever(Y), Politician(Z)
+            \item[i.] Buys(x, p) = Person x buys Policy p.
+            \item[i.] Expensive(p) = Policy p is expensive.
+            \item[iii.] Barber(x) = Person x is a barber.
+            \item[iv.] Shaves(x, y) = Person x shaves Person y.
+            \item[v.] Born(x, UK) = Person x is born in the UK.
+            \item[vi.] Parent(x, y) = Person x is the parent of Person y.
+            \item[vii.] BornCitizen(x, UK) = Person x is born in the UK and
+                is a citizen of the UK.
+            \item[viii.] CitizenByDescent(x, UK) = Person x is a citizen of
+                the UK by descent.
+            \item[ix.] Politician(x) = Person x is a politician.
+            \item[x.] Fools(x, y) = Person x fools Person y.
+            \item[xi.] Student(x) = Person x is a student.
+            \item[xii.] Russian(x, y, z) = Person x took Russian in year y
+                in semester z.
+            \item[xiii.] German(x, y, z) = Person x took German in year y
+                in semester z.
+            \item[xiv.] BestScore(x, y) = Best Score x in course y.
         \end{enumerate}
     \item[b.] Every person who buys a policy is clever.
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} \forall \hspace{0.5em} p \hspace{0.5em}
+        Buys(x, p) \rightarrow Clever(x) $$
+
     \item[c.] No person buys an expensive policy.
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} \forall \hspace{0.5em} p \hspace{0.5em}
+        Expensive(p) \rightarrow \neg Buys(x, p) $$
+
     \item[d.] There is a barber who shaves all men in town who do not shave
         themselves.
+        $$ \exists \hspace{0.5em} x \hspace{0.5em} Barber(x) \wedge
+        \hspace{0.5em} \forall \hspace{0.5em} y \hspace{0.5em} \neg Shaves(y,
+        y) \rightarrow Shaves(x, y) $$
+
     \item[e.] A person born in the UK, each of whose parents is a UK
         citizen or a UK resident, is a UK citizen by birth.
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} Born(x, UK) \wedge
+        \hspace{0.5 em} \forall \hspace{0.5em} y \hspace{0.5em} Parent(x, y)
+        \rightarrow BornCitizen(y, UK) \rightarrow CitizenByBirth(x, UK) $$
+
     \item[f.] A person born outside the UK, one of whose parents is a UK
         citizen by birth, is a UK citizen by descent.
-    \item[g.] Politicians can fool some of the people all of the time, and
-        they can fool all of the people some of the time, but they can't
-        fool all of the people all of the time.
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} \neg Born(x, UK) \wedge
+        \hspace{0.5em} \exists \hspace{0.5em} y \hspace{0.5em} Parent(x, y)
+        \wedge BornCitizen(y, UK) \rightarrow CitizenByDescent(x, UK) $$
+
+    \item[g.] Politicians can fool some of the people all of the time and all
+        of the people some of the time, but they cannot fool all of the
+        of the people all of the time.
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} Politician(x) \rightarrow
+        \exists \hspace{0.5em} y \hspace{0.5em} Fools(x, y) \wedge \forall
+        \hspace{0.5em} y \hspace{0.5em} Fools(x, y) \rightarrow \neg \forall
+        \hspace{0.5em} y \hspace{0.5em} Fools(x, y) $$
+
     \item[h.] Some students took Russian in spring 2001.
+        $$ \neg \forall \hspace{0.5em} x \hspace{0.5em} Student(x) \wedge
+        Russian(x, 2001, Spring) $$
+
     \item[i.] Only some students took German in spring 2001.
+        $$ \neg \forall \hspace{0.5em} x \hspace{0.5em} Student(x) \wedge
+        German(x, 2001, Spring) $$
+
     \item[j.] The best score in German is always higher than the best score
         in Russian.
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} \forall \hspace{0.5em} y
+        \hspace{0.5em} BestScore(x, German) > BestScore(y, Russian) $$
 
 \end{enumerate}
 
