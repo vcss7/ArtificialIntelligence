@@ -166,11 +166,28 @@ instantiated.
 
 \begin{enumerate}
 
-    \item[a.] $p(X, a, Y)$ and $p(Z, Z, b)$
-    \item[b.] $p(X, X)$ and $p(a, b)$
-    \item[c.] $p(X, Y, Z)$ and $p(c, d, d)$
-    \item[d.] $ancestor(X, father(X))$ and $ancestor(david, george)$
-    \item[e.] $p(a, X)$ and $p(Y,Z)$
+    \item[a.] $p(X, a, Y)$ and $p(Z, Z, b)$ \par
+        Substitution Set: $\{X/a, Y/b, Z/a\}$\par
+        Result Expression: $p(a, a, b)$
+               
+    \item[b.] $p(X, X)$ and $p(a, b)$ \par
+        It is not possible to unify these expressions because to unify them,
+        the substitution set would have to contain two different values for
+        variable X.
+
+    \item[c.] $p(X, Y, Z)$ and $p(c, d, d)$\par
+        Substitution Set: $\{X/c, Y/d, Z/d\}$\par
+        Result Expression: $p(c, d, d)$
+
+    \item[d.] $ancestor(X, father(X))$ and $ancestor(david, george)$ \par
+        If we assume $father(david) = george$ then we can unify these
+        expressions \par
+                par
+                                Substitution Set: $\{X/david\}$\par
+        Result Expression: $ancestor(david, father(david))$
+
+    \item[e.] $p(a, X)$ and $p(Y,Z)$ \par
+        Substitution Set: $ \{X/Z, Y/a\} $
 
 \end{enumerate}
 
@@ -182,7 +199,7 @@ instantiated.
 
     \item[a.] Prove that $Q$ is true with:
 
-        \begin{enumerate}
+        \begin{enumerate}[leftmargin=8em]
             \item[1.] $P \rightarrow Q$
             \item[2.] $L \land M \rightarrow P$
             \item[3.] $B \land L \rightarrow M$
@@ -200,7 +217,7 @@ instantiated.
 
     \item[b.] Prove $t \rightarrow s$
 
-        \begin{enumerate}
+        \begin{enumerate}[leftmargin=8em]
             \item[1.] $p \rightarrow q$
             \item[2.] $[q \land r] \rightarrow s$
             \item[3.] $[t \land u] \rightarrow r$
