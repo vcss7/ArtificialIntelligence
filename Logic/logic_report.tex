@@ -234,7 +234,21 @@ instantiated.
                 $$ A $$
                 $$ B $$
 
-            \item[iii.] Resolution
+            \item[iii.] Resolution \par
+                Remove implications
+                \begin{center}
+                    \begin{minipage}{0.4\textwidth}
+                        \begin{enumerate}
+                            \item[8..] $\neg P \vee Q$
+                            \item[9.] $\neg L \vee \neg M \vee P$
+                            \item[10.] $\neg B \vee \neg L \vee M$
+                            \item[11.] $\neg A \vee \neg P \vee L$
+                            \item[12.] $\neg A \vee \neg B \vee L$
+                        \end{enumerate}
+                    \end{minipage}
+                \end{center}
+                Resolutions
+
         \end{enumerate}
 
     \item[b.] Prove $t \rightarrow s$
@@ -276,6 +290,21 @@ instantiated.
                 $$ t $$
 
             \item[iv.] Resolution
+                \begin{center}
+                    \begin{minipage}{0.4\textwidth}
+                        \begin{enumerate}
+                            \item[9.] $\neg p \vee q$
+                            \item[10.] $\neg q \vee \neg r \vee s$
+                            \item[11.] $\neg t \vee \neg u \vee r$
+                            \item[12.] $\neg u \vee w$
+                            \item[13.] $\neg t \vee y$
+                            \item[14.] $\neg y \vee u$
+                            \item[15.] $\neg r \vee p$
+                            \item[16.] $\neg p \vee m$
+                        \end{enumerate}
+                    \end{minipage}
+                \end{center}
+
         \end{enumerate}
 
 \end{enumerate}
@@ -332,7 +361,25 @@ instantiated.
                 $$ Dog(fido) \wedge Energy(fido) \rightarrow \neg Tired(fido) $$
                 $$ Dog(fido) \wedge Trick(fido) \wedge Energy(fido) $$
 
-            \item[v.] prove via resolution that fido has an exciting life
+            \item[v.] prove via resolution that fido has an exciting life\par
+                Remove implications:
+                \begin{center}
+                    \begin{minipage}{0.4\textwidth}
+                        \begin{enumerate}
+                            \item[9.] $\neg Dog(x) \vee \neg Trick(x) \vee \neg
+                                Energy(x)$
+                            \item[10.] $\neg Dog(x) \vee \neg Trick(x) \vee
+                                Smart(x)$
+                            \item[11.] $\neg Dog(x) \vee Tired(x) \vee \neg
+                                Energy(x)$
+                            \item[12.] $\neg Dog(x) \vee \neg Tired(x) \vee
+                                Smart(x)$
+                            \item[13.] $\neg Dog(x) \vee \neg Tired(x) \vee
+                                \neg Smart(x) \vee Happy(x)$
+                            \item[14.] $\neg Happy(x) \vee Exciting(x)$
+                        \end{enumerate}
+                    \end{minipage}
+                \end{center}
         \end{enumerate}
 
     \item[b.] “Anyone passing the history exams and winning the lottery is
@@ -378,7 +425,21 @@ instantiated.
                 $$ Lucky(john) \rightarrow Exams(john) $$
                 $$ Lucky(john) $$
 
-            \item[v.] prove via resolution that John is happy
+            \item[v.] prove via resolution that John is happy\par
+                Remove implications:
+                \begin{center}
+                    \begin{minipage}{0.4\textwidth}
+                        \begin{enumerate}
+                            \item[7.] $\neg Study(x) \vee \neg Lucky(x)$
+                            \item[8.] $\neg Lucky(x) \vee Exams(x)$
+                            \item[9.] $\neg Lucky(x) \vee Lottery(x)$
+                            \item[10.] $\neg Exams(x) \vee History(x)$
+                            \item[11.] $\neg History(x) \vee \neg Lottery(x) \vee
+                                Happy(x)$
+                        \end{enumerate}
+                    \end{minipage}
+                \end{center}
+
         \end{enumerate}
 
 \end{enumerate}
