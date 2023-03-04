@@ -1,0 +1,448 @@
+\documentclass[11pt]{article}
+
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[margin=1.0in]{geometry}
+\usepackage[none]{hyphenat}
+\usepackage{amsfonts,amsmath,amssymb}
+\usepackage{fancyhdr}
+
+\thispagestyle{fancy}
+\headheight14pt
+\fancyhead{}
+\fancyhead[L]{\slshape\MakeUppercase{\large Assignment-02: Logic and Logic
+    Reasoning}} 
+\fancyhead[R]{\large \slshape Victor Solis | \today}
+
+\begin{document}
+\begin{flushleft}
+Artificial intelligence assignment 2; logic and logic reasoning.
+
+\section*{1. Logic}
+
+Consider the following statements:
+    \begin{enumerate}
+
+        \item[a.] $((smoke \land heat \rightarrow fire) \leftrightarrow (smoke \rightarrow fire) \lor (heat \rightarrow fire))$
+            \begin{enumerate} 
+
+                \item[i.] Show the truth table for this sentence. \par
+                    \medskip
+                    \begin{tabular}{@{ }c@{ }@{ }c@{ }@{ }c | c@{ }@{}c@{}@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c@{ }@{}c@{}@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{}c@{}@{ }c}
+                    S & H & F &  & ( & ( & S & $\land$ & H & ) & $\rightarrow$ & F & ) & $\leftrightarrow$ & ( & ( & S & $\rightarrow$ & F & ) & $\lor$ & ( & H & $\rightarrow$ & F & ) & ) & \\
+                    \hline 
+                    T & T & T &  &  &  & T & T & T &  & T & T &  & \textcolor{red}{T} &  &  & T & T & T &  & T &  & T & T & T &  &  & \\
+                    T & T & F &  &  &  & T & T & T &  & F & F &  & \textcolor{red}{T} &  &  & T & F & F &  & F &  & T & F & F &  &  & \\
+                    T & F & T &  &  &  & T & F & F &  & T & T &  & \textcolor{red}{T} &  &  & T & T & T &  & T &  & F & T & T &  &  & \\
+                    T & F & F &  &  &  & T & F & F &  & T & F &  & \textcolor{red}{T} &  &  & T & F & F &  & T &  & F & T & F &  &  & \\
+                    F & T & T &  &  &  & F & F & T &  & T & T &  & \textcolor{red}{T} &  &  & F & T & T &  & T &  & T & T & T &  &  & \\
+                    F & T & F &  &  &  & F & F & T &  & T & F &  & \textcolor{red}{T} &  &  & F & T & F &  & T &  & T & F & F &  &  & \\
+                    F & F & T &  &  &  & F & F & F &  & T & T &  & \textcolor{red}{T} &  &  & F & T & T &  & T &  & F & T & T &  &  & \\
+                    F & F & F &  &  &  & F & F & F &  & T & F &  & \textcolor{red}{T} &  &  & F & T & F &  & T &  & F & T & F &  &  & \\
+                    \end{tabular}
+                    \medskip
+                \item[ii.] Is this sentence Valid, Satisfiable, or neither? \par
+                    This sentence is \textbf{valid}.
+
+            \end{enumerate}
+        \item[b.] $(a_1 \lor a_3) \land (\neg a_1 \lor a_2) \land (\neg a_1 \lor a_4) \land (\neg a_1 \lor \neg a_4) \land (\neg a_3)$
+
+            \begin{enumerate} 
+                \item[i.] Show the truth table for this sentence. \par
+                    \medskip
+                    \begin{tabular}{@{ }c@{ }@{ }c@{ }@{ }c@{ }@{ }c | c@{ }@{}c@{}@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{}c@{}@{ }c@{ }@{}c@{}@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c@{ }@{ }c@{ }@{ }c@{ }@{}c@{}@{ }c}
+                    $a_1$ & $a_2$ & $a_3$ & $a_4$ &  & ( & ( & $a_1$ & $\lor$ & $a_3$ & ) & $\land$ & ( & $\lnot$ & $a_1$ & $\lor$ & $a_2$ & ) & ) & $\land$ & ( & ( & $\lnot$ & $a_1$ & $\lor$ & $a_4$ & ) & $\land$ & $\lnot$ & $a_3$ & ) & \\
+                    \hline 
+                    T & T & T & T &  &  &  & T & T & T &  & T &  & F & T & T & T &  &  & \textcolor{red}{F} &  &  & F & T & T & T &  & F & F & T &  & \\
+                    T & T & T & F &  &  &  & T & T & T &  & T &  & F & T & T & T &  &  & \textcolor{red}{F} &  &  & F & T & F & F &  & F & F & T &  & \\
+                    T & T & F & T &  &  &  & T & T & F &  & T &  & F & T & T & T &  &  & \textcolor{red}{T} &  &  & F & T & T & T &  & T & T & F &  & \\
+                    T & T & F & F &  &  &  & T & T & F &  & T &  & F & T & T & T &  &  & \textcolor{red}{F} &  &  & F & T & F & F &  & F & T & F &  & \\
+                    T & F & T & T &  &  &  & T & T & T &  & F &  & F & T & F & F &  &  & \textcolor{red}{F} &  &  & F & T & T & T &  & F & F & T &  & \\
+                    T & F & T & F &  &  &  & T & T & T &  & F &  & F & T & F & F &  &  & \textcolor{red}{F} &  &  & F & T & F & F &  & F & F & T &  & \\
+                    T & F & F & T &  &  &  & T & T & F &  & F &  & F & T & F & F &  &  & \textcolor{red}{F} &  &  & F & T & T & T &  & T & T & F &  & \\
+                    T & F & F & F &  &  &  & T & T & F &  & F &  & F & T & F & F &  &  & \textcolor{red}{F} &  &  & F & T & F & F &  & F & T & F &  & \\
+                    F & T & T & T &  &  &  & F & T & T &  & T &  & T & F & T & T &  &  & \textcolor{red}{F} &  &  & T & F & T & T &  & F & F & T &  & \\
+                    F & T & T & F &  &  &  & F & T & T &  & T &  & T & F & T & T &  &  & \textcolor{red}{F} &  &  & T & F & T & F &  & F & F & T &  & \\
+                    F & T & F & T &  &  &  & F & F & F &  & F &  & T & F & T & T &  &  & \textcolor{red}{F} &  &  & T & F & T & T &  & T & T & F &  & \\
+                    F & T & F & F &  &  &  & F & F & F &  & F &  & T & F & T & T &  &  & \textcolor{red}{F} &  &  & T & F & T & F &  & T & T & F &  & \\
+                    F & F & T & T &  &  &  & F & T & T &  & T &  & T & F & T & F &  &  & \textcolor{red}{F} &  &  & T & F & T & T &  & F & F & T &  & \\
+                    F & F & T & F &  &  &  & F & T & T &  & T &  & T & F & T & F &  &  & \textcolor{red}{F} &  &  & T & F & T & F &  & F & F & T &  & \\
+                    F & F & F & T &  &  &  & F & F & F &  & F &  & T & F & T & F &  &  & \textcolor{red}{F} &  &  & T & F & T & T &  & T & T & F &  & \\
+                    F & F & F & F &  &  &  & F & F & F &  & F &  & T & F & T & F &  &  & \textcolor{red}{F} &  &  & T & F & T & F &  & T & T & F &  & \\
+                    \end{tabular}
+                    \medskip
+                \item[ii.] Is this sentence Valid, Satisfiable, or neither? \par
+                    This sentence is \textbf{satisfiable}.
+            \end{enumerate}
+
+    \end{enumerate}
+
+\rule[0.1pt]{40em}{1.0pt}
+
+\section*{2. Vocabulary} First-order logic with consistent vocabulary.
+
+Represent the following sentences in first-order logic, using a consistent
+    vocabulary (which you must define as well).
+
+\begin{enumerate}
+
+    \item[a.] Define the vocabulary.
+        \begin{enumerate} 
+            \item[i.] Buys(x, p) = Person x buys Policy p.
+            \item[i.] Expensive(p) = Policy p is expensive.
+            \item[iii.] Barber(x) = Person x is a barber.
+            \item[iv.] Shaves(x, y) = Person x shaves Person y.
+            \item[v.] Born(x, UK) = Person x is born in the UK.
+            \item[vi.] Parent(x, y) = Person x is the parent of Person y.
+            \item[vii.] BornCitizen(x, UK) = Person x is born in the UK and
+                is a citizen of the UK.
+            \item[viii.] CitizenByDescent(x, UK) = Person x is a citizen of
+                the UK by descent.
+            \item[ix.] Politician(x) = Person x is a politician.
+            \item[x.] canFool(x, y, t) = Person x fools Person y at time t.
+            \item[xi.] Student(x) = Person x is a student.
+            \item[xii.] Russian(x, y, z) = Person x took Russian in year y
+                in semester z.
+            \item[xiii.] German(x, y, z) = Person x took German in year y
+                in semester z.
+            \item[xiv.] BestScore(x, y) = Best Score x in course y.
+        \end{enumerate}
+    \item[b.] Every person who buys a policy is clever.
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} \forall \hspace{0.5em} p \hspace{0.5em}
+        Buys(x, p) \rightarrow Clever(x) $$
+
+    \item[c.] No person buys an expensive policy.
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} \forall \hspace{0.5em} p \hspace{0.5em}
+        Expensive(p) \rightarrow \neg Buys(x, p) $$
+
+    \item[d.] There is a barber who shaves all men in town who do not shave
+        themselves.
+        $$ \exists \hspace{0.5em} x \hspace{0.5em} Barber(x) \wedge
+        \hspace{0.5em} \forall \hspace{0.5em} y \hspace{0.5em} \neg Shaves(y,
+        y) \rightarrow Shaves(x, y) $$
+
+    \item[e.] A person born in the UK, each of whose parents is a UK
+        citizen or a UK resident, is a UK citizen by birth.
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} Born(x, UK) \wedge
+        \hspace{0.5 em} \forall \hspace{0.5em} y \hspace{0.5em} Parent(x, y)
+        \rightarrow BornCitizen(y, UK) \rightarrow CitizenByBirth(x, UK) $$
+
+    \item[f.] A person born outside the UK, one of whose parents is a UK
+        citizen by birth, is a UK citizen by descent.
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} \neg Born(x, UK) \wedge
+        \hspace{0.5em} \exists \hspace{0.5em} y \hspace{0.5em} Parent(x, y)
+        \wedge BornCitizen(y, UK) \rightarrow CitizenByDescent(x, UK) $$
+
+    \item[g.] Politicians can fool some of the people all of the time and all
+        of the people some of the time, but they cannot fool all of the
+        of the people all of the time.
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} Politician(x) \wedge
+        \hspace{0.5em} \exists \hspace{0.5em} y \hspace{0.5em} \forall \hspace{0.5em} t
+        \hspace{0.5em} canFool(x, y, t) $$
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} Politician(x) \wedge
+        \hspace{0.5em} \forall \hspace{0.5em} y \hspace{0.5em} \exists \hspace{0.5em} t
+        \hspace{0.5em} canFool(x, y, t) $$
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} Politician(x) \wedge
+        \hspace{0.5em} \forall \hspace{0.5em} y \hspace{0.5em} \forall \hspace{0.5em} t
+        \hspace{0.5em} \neg canFool(x, y, t) $$
+
+    \item[h.] Some students took Russian in spring 2001.
+        $$ \neg \forall \hspace{0.5em} x \hspace{0.5em} Student(x) \wedge
+        Russian(x, 2001, Spring) $$
+
+    \item[i.] Only some students took German in spring 2001.
+        $$ \neg \forall \hspace{0.5em} x \hspace{0.5em} Student(x) \wedge
+        German(x, 2001, Spring) $$
+
+    \item[j.] The best score in German is always higher than the best score
+        in Russian.
+        $$ \forall \hspace{0.5em} x \hspace{0.5em} \forall \hspace{0.5em} y
+        \hspace{0.5em} BestScore(x, German) > BestScore(y, Russian) $$
+
+\end{enumerate}
+
+\rule[0.1pt]{40em}{1.0pt}
+
+\section*{3. Unifying Pairs of Expression}  Attempt to unify the following pairs
+of expressions.  Either show their most general unifiers, or explain why they
+will not unify. Use the ${a/b}$ substitution form. Upper case letters are
+variables, lowercase are constants. Assume all variables are universally
+instantiated. 
+
+\begin{enumerate}
+
+    \item[a.] $p(X, a, Y)$ and $p(Z, Z, b)$ \par
+        Substitution Set: $\{X/a, Y/b, Z/a\}$\par
+        Result Expression: $p(a, a, b)$
+               
+    \item[b.] $p(X, X)$ and $p(a, b)$ \par
+        It is not possible to unify these expressions because to unify them,
+        the substitution set would have to contain two different values for
+        variable X.
+
+    \item[c.] $p(X, Y, Z)$ and $p(c, d, d)$\par
+        Substitution Set: $\{X/c, Y/d, Z/d\}$\par
+        Result Expression: $p(c, d, d)$
+
+    \item[d.] $ancestor(X, father(X))$ and $ancestor(david, george)$ \par
+        If we assume $father(david) = george$ then we can unify these
+        expressions \par
+                par
+                                Substitution Set: $\{X/david\}$\par
+        Result Expression: $ancestor(david, father(david))$
+
+    \item[e.] $p(a, X)$ and $p(Y,Z)$ \par
+        Substitution Set: $ \{X/Z, Y/a\} $
+
+\end{enumerate}
+
+\rule[0.1pt]{40em}{1.0pt}
+
+\section*{4. Knowledge Base} Consider the following knowledge base:
+
+\begin{enumerate}
+
+    \item[a.] Prove that $Q$ is true with:
+
+        \begin{center}
+            \begin{minipage}{0.4\textwidth}
+                \begin{enumerate}
+                    \item[1.] $P \rightarrow Q$
+                    \item[2.] $L \land M \rightarrow P$
+                    \item[3.] $B \land L \rightarrow M$
+                    \item[4.] $A \land P \rightarrow L$
+                    \item[5.] $A \land B \rightarrow L$
+                    \item[6.] A
+                    \item[7.] B
+                \end{enumerate}
+            \end{minipage}
+        \end{center}
+
+        \begin{enumerate}
+            \item[i.] Forward-Chaining \\
+                If we assume that A and B are true, then:
+                $$ A \wedge B \rightarrow L $$
+                $$ B \wedge L \rightarrow M $$
+                $$ L \wedge M \rightarrow P $$
+                $$ P \rightarrow Q $$
+            \item[ii.] Backward-Chaining
+                $$ Q $$
+                $$ P \rightarrow Q $$
+                $$ L \wedge M \rightarrow P $$
+                $$ B \wedge L \rightarrow M $$
+                $$ A \wedge B \rightarrow L $$
+                $$ A $$
+                $$ B $$
+
+            \item[iii.] Resolution \par
+                Remove implications
+                \begin{center}
+                    \begin{minipage}{0.4\textwidth}
+                        \begin{enumerate}
+                            \item[8..] $\neg P \vee Q$
+                            \item[9.] $\neg L \vee \neg M \vee P$
+                            \item[10.] $\neg B \vee \neg L \vee M$
+                            \item[11.] $\neg A \vee \neg P \vee L$
+                            \item[12.] $\neg A \vee \neg B \vee L$
+                        \end{enumerate}
+                    \end{minipage}
+                \end{center}
+                Resolutions
+
+        \end{enumerate}
+
+    \item[b.] Prove $t \rightarrow s$
+
+        \begin{center}
+            \begin{minipage}{0.4\textwidth}
+                \begin{enumerate}
+                    \item[1.] $p \rightarrow q$
+                    \item[2.] $[q \land r] \rightarrow s$
+                    \item[3.] $[t \land u] \rightarrow r$
+                    \item[4.] $u \rightarrow w$
+                    \item[5.] $t \rightarrow y$
+                    \item[6.] $y \rightarrow u$
+                    \item[7.] $r \rightarrow p$
+                    \item[8.] $p \rightarrow m$
+                \end{enumerate}
+            \end{minipage}
+        \end{center}
+
+        \begin{enumerate}
+            \item[i.] Express in clause form
+            \item[ii.] Forward-Chaining\\
+                If we assume that $t$ is true, then:
+                $$ t \rightarrow y $$
+                $$ y \rightarrow u $$
+                $$ [t \land u] \rightarrow r $$
+                $$ r \rightarrow p $$
+                $$ p \rightarrow q $$
+                $$ [q \land r] \rightarrow s $$
+
+            \item[iii.] Backward-Chaining
+                $$ s $$
+                $$ [q \land r] \rightarrow s $$
+                $$ p \rightarrow q $$
+                $$ r \rightarrow p $$
+                $$ [t \land u] \rightarrow r $$
+                $$ y \rightarrow u $$
+                $$ t \rightarrow y $$
+                $$ t $$
+
+            \item[iv.] Resolution
+                \begin{center}
+                    \begin{minipage}{0.4\textwidth}
+                        \begin{enumerate}
+                            \item[9.] $\neg p \vee q$
+                            \item[10.] $\neg q \vee \neg r \vee s$
+                            \item[11.] $\neg t \vee \neg u \vee r$
+                            \item[12.] $\neg u \vee w$
+                            \item[13.] $\neg t \vee y$
+                            \item[14.] $\neg y \vee u$
+                            \item[15.] $\neg r \vee p$
+                            \item[16.] $\neg p \vee m$
+                        \end{enumerate}
+                    \end{minipage}
+                \end{center}
+
+        \end{enumerate}
+
+\end{enumerate}
+
+\rule[0.1pt]{40em}{1.0pt}
+
+\section*{5. Stories}
+\begin{enumerate}
+
+    \item[a.] “All dogs who are not tired and are smart are happy.  Those dogs
+        who do tricks are not stupid.  Fido can do tricks and is full of
+        energy.  Happy dogs have exciting lives.”
+
+        \begin{enumerate}
+            \item[i.] translate the sentences of into predicate form
+
+                \begin{enumerate}
+                    \item[1.] $Dog(x)$ = x is a dog
+                    \item[2.] $Tired(x)$ = x is tired
+                    \item[3.] $Smart(x)$ = x is smart
+                    \item[4.] $Happy(x)$ = x is happy
+                    \item[5.] $Trick(x)$ = x can do tricks
+                    \item[6.] $Stupid(x)$ = x is Stupid
+                    \item[7.] $Exciting(x)$ = x has an exciting life
+                    \item[8.] $Energy(x)$ = x is full of energy
+                \end{enumerate}
+
+            \item[ii.] transform the predicate sentences into clause form
+
+                \begin{enumerate}
+                    \item[1.] $\forall \hspace{0.5em} x \hspace{0.5em}
+                        (Dog(x) \wedge \neg Tired(x) \wedge Smart(x) \rightarrow
+                        Happy(x))$
+                    \item[2.] $\forall \hspace{0.5em} x \hspace{0.5em}
+                        (Dog(x) \wedge Trick(x) \rightarrow \neg Stupid(x))$
+                    \item[3.] $Dog(fido) \wedge Trick(fido) \wedge Energy(fido)$
+                    \item[4.] $Happy(x) \rightarrow Exciting(x)$
+                \end{enumerate}
+
+            \item[iii.] prove via forward chaining that fido has an exciting life
+                $$ Dog(fido) \wedge Trick(fido) \wedge Energy(fido) $$
+                $$ Dog(fido) \wedge Energy(fido) \rightarrow \neg Tired(fido) $$
+                $$ Dog(fido) \wedge Trick(fido) \rightarrow Smart(fido) $$
+                $$ Dog(fido) \wedge \neg Tired(fido) \wedge Smart(fido) \rightarrow
+                    Happy(fido) $$
+                $$ Happy(fido) \rightarrow Exciting(fido) $$
+
+            \item[iv.] prove via backward chaining that fido has an exciting life
+                $$ Exciting(fido) $$
+                $$ Happy(fido) \rightarrow Exciting(fido) $$
+                $$ Dog(fido) \wedge \neg Tired(fido) \wedge Smart(fido) \rightarrow
+                    Happy(fido) $$
+                $$ Dog(fido) \wedge Trick(fido) \rightarrow Smart(fido) $$
+                $$ Dog(fido) \wedge Energy(fido) \rightarrow \neg Tired(fido) $$
+                $$ Dog(fido) \wedge Trick(fido) \wedge Energy(fido) $$
+
+            \item[v.] prove via resolution that fido has an exciting life\par
+                Remove implications:
+                \begin{center}
+                    \begin{minipage}{0.4\textwidth}
+                        \begin{enumerate}
+                            \item[9.] $\neg Dog(x) \vee \neg Trick(x) \vee \neg
+                                Energy(x)$
+                            \item[10.] $\neg Dog(x) \vee \neg Trick(x) \vee
+                                Smart(x)$
+                            \item[11.] $\neg Dog(x) \vee Tired(x) \vee \neg
+                                Energy(x)$
+                            \item[12.] $\neg Dog(x) \vee \neg Tired(x) \vee
+                                Smart(x)$
+                            \item[13.] $\neg Dog(x) \vee \neg Tired(x) \vee
+                                \neg Smart(x) \vee Happy(x)$
+                            \item[14.] $\neg Happy(x) \vee Exciting(x)$
+                        \end{enumerate}
+                    \end{minipage}
+                \end{center}
+        \end{enumerate}
+
+    \item[b.] “Anyone passing the history exams and winning the lottery is
+        happy.  But anyone who studies or is lucky can pass all the exams.
+        John did not study, but he is lucky.  Anyone who is lucky wins the
+        lottery.”  
+
+        \begin{enumerate}
+            \item[i.] translate the sentences of into predicate form
+                \begin{enumerate}
+                    \item[1.] $History(x)$ = x passed the history exams
+                    \item[2.] $Lottery(x)$ = x won the lottery
+                    \item[3.] $Happy(x)$ = x is happy
+                    \item[4.] $Study(x)$ = x studied
+                    \item[5.] $Lucky(x)$ = x is lucky
+                    \item[6.] $Exams(x)$ = x passed all the exams
+                \end{enumerate}
+
+            \item[ii.] transform the predicate sentences into clause form
+                \begin{enumerate}
+                    \item[1.] $\forall \hspace{0.5em} x \hspace{0.5em}
+                        (History(x) \wedge Lottery(x) \rightarrow Happy(x))$
+                    \item[2.] $\forall \hspace{0.5em} x \hspace{0.5em}
+                        (Exams(x) \rightarrow (History(x))$
+                    \item[3.] $\forall \hspace{0.5em} x \hspace{0.5em}
+                        (Study(x) \vee Lucky(x) \rightarrow Exams(x))$
+                    \item[4.] $\forall \hspace{0.5em} x \hspace{0.5em}
+                        (Lucky(x) \rightarrow Lottery(x))$
+                \end{enumerate}
+
+            \item[iii.] prove via forward chaining that John is happy
+                $$ \neg Study(john) \wedge Lucky(john) $$
+                $$ Lucky(john) \rightarrow Exams(john) $$
+                $$ Lucky(john) \rightarrow Lottery(john) $$
+                $$ Exams(john) \rightarrow History(john) $$
+                $$ History(john) \wedge Lottery(john) \rightarrow Happy(john) $$
+
+            \item[iv.] prove via backward chaining that John is happy
+                $$ Happy(john) $$
+                $$ History(john) \wedge Lottery(john) \rightarrow Happy(john) $$
+                $$ Exams(john) \rightarrow History(john) $$
+                $$ Lucky(john) \rightarrow Lottery(john) $$
+                $$ Lucky(john) \rightarrow Exams(john) $$
+                $$ Lucky(john) $$
+
+            \item[v.] prove via resolution that John is happy\par
+                Remove implications:
+                \begin{center}
+                    \begin{minipage}{0.4\textwidth}
+                        \begin{enumerate}
+                            \item[7.] $\neg Study(x) \vee \neg Lucky(x)$
+                            \item[8.] $\neg Lucky(x) \vee Exams(x)$
+                            \item[9.] $\neg Lucky(x) \vee Lottery(x)$
+                            \item[10.] $\neg Exams(x) \vee History(x)$
+                            \item[11.] $\neg History(x) \vee \neg Lottery(x) \vee
+                                Happy(x)$
+                        \end{enumerate}
+                    \end{minipage}
+                \end{center}
+
+        \end{enumerate}
+
+\end{enumerate}
+
+\end{flushleft}
+\end{document}
