@@ -87,11 +87,59 @@ def O_move(board):
     Return:
     - a tuple (i,j) with the row, col of O's chosen move
     """
+    best_score = -100
+    best_move = None
+
     for row in range(len(board)):
         for col in range(len(board[row])):
             if board[row][col] == EMPTY:
-                return (row, col)
+                board[row][col] = X
+                score = minimax_o(board, O, 0)
+                board[row][col] = EMPTY
+                if score > best_score:
+                    best_score = score
+                    best_move = (row, col)
+    return best_move
     print("ERROR! No Valid Move!")
+
+
+def minimax_o(graph, node, depth):
+    """
+    This function is a helper function to the X_move function.
+    It performs a depth first search on the game tree to find the best move
+    while using the minimax algorithm to evaluate the score of each node.
+    """
+    # just returns 0 for now
+    state = evaluate_game(graph)
+    if state == GAME_X:
+        return 10 - depth
+    elif state == GAME_O:
+        return -10 - depth
+    elif state == GAME_DRAW:
+        return 0 - depth
+    else:
+        if node == X:
+            best_score = -100
+            for row in range(len(graph)):
+                for col in range(len(graph[row])):
+                    if graph[row][col] == EMPTY:
+                        graph[row][col] = X
+                        score = minimax_o(graph, O, depth + 1)
+                        graph[row][col] = EMPTY
+                        if score > best_score:
+                            best_score = score
+            return best_score
+        else:
+            best_score = 100
+            for row in range(len(graph)):
+                for col in range(len(graph[row])):
+                    if graph[row][col] == EMPTY:
+                        graph[row][col] = O
+                        score = minimax_o(graph, X, depth + 1)
+                        graph[row][col] = EMPTY
+                        if score < best_score:
+                            best_score = score
+            return best_score
 
 
 def X_move(board):
@@ -138,7 +186,7 @@ def X_move(board):
         for col in range(len(board[row])):
             if board[row][col] == EMPTY:
                 board[row][col] = X
-                score = minimax(board, O, 0)
+                score = minimax_x(board, O, 0)
                 board[row][col] = EMPTY
                 if score > best_score:
                     best_score = score
@@ -147,7 +195,7 @@ def X_move(board):
     print("ERROR! No Valid Move!")
 
 
-def minimax(graph, node, depth):
+def minimax_x(graph, node, depth):
     """
     This function is a helper function to the X_move function.
     It performs a depth first search on the game tree to find the best move
@@ -168,7 +216,7 @@ def minimax(graph, node, depth):
                 for col in range(len(graph[row])):
                     if graph[row][col] == EMPTY:
                         graph[row][col] = X
-                        score = minimax(graph, O, depth + 1)
+                        score = minimax_x(graph, O, depth + 1)
                         graph[row][col] = EMPTY
                         if score > best_score:
                             best_score = score
@@ -179,7 +227,7 @@ def minimax(graph, node, depth):
                 for col in range(len(graph[row])):
                     if graph[row][col] == EMPTY:
                         graph[row][col] = O
-                        score = minimax(graph, X, depth + 1)
+                        score = minimax_x(graph, X, depth + 1)
                         graph[row][col] = EMPTY
                         if score < best_score:
                             best_score = score
