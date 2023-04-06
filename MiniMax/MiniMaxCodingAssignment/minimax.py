@@ -1,3 +1,4 @@
+# enums for game states
 GAME_INCOMPLETE = 0
 GAME_DRAW = 1
 GAME_X = 2
@@ -66,6 +67,8 @@ def print_board(board):
         print(line)
         if row < 2:
             print("-----------")
+        else:                   # temp delete later
+            print("")           # temp delete later
 
 
 def O_move(board):
@@ -120,14 +123,67 @@ def X_move(board):
     #      X | O | O  ->             -> Score = -15  -> This state is actually not possible, because X always goes first
     #      O | O | X     Depth = 5                      However, in the input state I used, its actually impossible for O to win, as far as I can tell...
     #
+    """
+    This function plays the X player (The agent).
 
-    # START FILLER CODE, just picks first valid move!
+    The agent uses the minimax algorithm to find the best move.
+    It values a win as 10, a loss as -10, and a draw as 0.
+    It values a win that occurs sooner at a higher value than a win that occurs later.
+    For every move that goes deeper into the game, the score is reduced by 1.
+    """
+    best_score = -100
+    best_move = None
+
     for row in range(len(board)):
         for col in range(len(board[row])):
             if board[row][col] == EMPTY:
-                return (row, col)
+                board[row][col] = X
+                score = minimax(board, O, 0)
+                board[row][col] = EMPTY
+                if score > best_score:
+                    best_score = score
+                    best_move = (row, col)
+    return best_move
     print("ERROR! No Valid Move!")
-    # END FILLER CODE
+
+
+def minimax(graph, node, depth):
+    """
+    This function is a helper function to the X_move function.
+    It performs a depth first search on the game tree to find the best move
+    while using the minimax algorithm to evaluate the score of each node.
+    """
+    # just returns 0 for now
+    state = evaluate_game(graph)
+    if state == GAME_X:
+        return 10 - depth
+    elif state == GAME_O:
+        return -10 - depth
+    elif state == GAME_DRAW:
+        return 0 - depth
+    else:
+        if node == X:
+            best_score = -100
+            for row in range(len(graph)):
+                for col in range(len(graph[row])):
+                    if graph[row][col] == EMPTY:
+                        graph[row][col] = X
+                        score = minimax(graph, O, depth + 1)
+                        graph[row][col] = EMPTY
+                        if score > best_score:
+                            best_score = score
+            return best_score
+        else:
+            best_score = 100
+            for row in range(len(graph)):
+                for col in range(len(graph[row])):
+                    if graph[row][col] == EMPTY:
+                        graph[row][col] = O
+                        score = minimax(graph, X, depth + 1)
+                        graph[row][col] = EMPTY
+                        if score < best_score:
+                            best_score = score
+            return best_score
 
 
 board = [[EMPTY, EMPTY, EMPTY],
