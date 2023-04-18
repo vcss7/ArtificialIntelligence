@@ -1,0 +1,115 @@
+\documentclass[11pt]{article}
+
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[margin=1.0in]{geometry}
+\usepackage[none]{hyphenat}
+\usepackage{amsfonts,amsmath,amssymb}
+\usepackage{fancyhdr}
+
+\thispagestyle{fancy}
+\headheight14pt
+\fancyhead{}
+\fancyhead[L]{\slshape\MakeUppercase{\large Assignment-04}}
+\fancyhead[R]{\large \slshape Victor Solis | \today}
+
+\begin{document}
+\begin{flushleft}
+Assignment 4: Planning
+
+\section*{Question 1}
+
+Consider the following Crypt-arithmetic problems, where all letters represent a
+different digit and the resulting sum is correct. \textbf{Write out all
+variables, domains and constraints of the problem.}
+
+    \begin{enumerate}[label=(\alph*)]
+        \itemsep1em
+        \item SATURN + URANUS = PLANETS
+        \item YES + SEND + ME + MORE = MONEY
+    \end{enumerate}
+
+\rule[0.1pt]{40em}{1.0pt}
+
+\section*{Question 2}
+Consider the following set of edges between nodes. Find a coloring using colors
+red, blue, and green such that no two adjacent nodes are assigned the same
+color.
+
+\begin{center}
+$\{ (a, b),(a, d),(b, c),(b, d),(b, g),(c, g),(d, e),(d, f),(d, g),(f, g) \}$
+\end{center}
+
+\begin{enumerate}[label=(\alph*)]
+\itemsep1em
+
+    \item Define a CSP for this problem. Clearly define the variables, domains,
+        and constraints.
+        
+    \item Draw the binary constraint graph for this CSP.
+
+    \item Find at least one solution to the CSP. 
+
+\end{enumerate}
+\rule[0.1pt]{40em}{1.0pt}
+
+\section*{Question 3}
+Consider a block stacking robot with the following actions:
+
+\begin{itemize}
+    \item[$\blacksquare$] Stack(x, y)
+        \begin{itemize}
+            \item Preconditions: Clear(y), Holding(x)
+            \item Effects: armEmpty, On(x, y), ¬Clear(y), ¬Holding(x)
+        \end{itemize}
+    \item[$\blacksquare$] Unstack(x, y)
+        \begin{itemize}
+            \item Preconditions: Clear(x), On(x, y), armEmpty
+            \item Effects: ¬armEmpty, ¬On(x, y), Clear(y), Holding(x)
+        \end{itemize}
+    \item[$\blacksquare$] Pickup(x)
+        \begin{itemize}
+            \item Preconditions: Clear(x), On(x, TABLE), armEmpty
+            \item Effects: ¬armEmpty, ¬On(x, TABLE), Holding(x)
+        \end{itemize}
+    \item[$\blacksquare$] Putdown(x)
+        \begin{itemize}
+            \item Preconditions: Holding(x)
+            \item Effects: armEmpty, On(x, TABLE), ¬Holding(x)
+        \end{itemize}
+\end{itemize}
+
+Create a plan for each of the initial state/goal pairs below
+Assume armEmpty is in initial state and the table has infinite space
+
+\begin{enumerate}[label=(\alph*)]
+\itemsep1em
+    \item TODO
+    \item TODO
+    \item TODO
+\end{enumerate}
+
+\rule[0.1pt]{40em}{1.0pt}
+
+\section*{Question 4}
+Consider the following simple planning problem in which the objective is to
+interchange the values of two variables v1 and v2
+
+\begin{itemize}
+    \item Initial State: Value(v1, 3), Value(v2, 5), Value(v3, 0)
+    \item Goal State: Value(v1, 5), Value(v2, 3)
+    \item Actions:
+        \begin{itemize}
+            \item Assign(V, W, X, Y)
+                \begin{itemize}
+                    \item[$\blacksquare$] Preconditions: Value(V, X),
+                        Value(W, Y)
+                    \item[$\blacksquare$] Effects: Value(V,
+                        Y), ¬Value(W, X)
+                \end{itemize}
+        \end{itemize}
+\end{itemize}
+
+
+\end{flushleft}
+\end{document}
