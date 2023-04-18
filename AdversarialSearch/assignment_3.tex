@@ -7,12 +7,15 @@
 \usepackage{amsfonts,amsmath,amssymb}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
+\usepackage{tabularx}
 
 \thispagestyle{fancy}
 \headheight14pt
 \fancyhead{}
 \fancyhead[L]{\slshape\MakeUppercase{\large Assignment-03}}
 \fancyhead[R]{\large \slshape Victor Solis | \today}
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
 \begin{document}
 \begin{flushleft}
@@ -31,6 +34,17 @@ Assignment 3 - Adversarial Search
         \label{fig:game_tree}
     \end{center}
 \end{figure}
+
+ \begin{table}[h]
+     \renewcommand{\arraystretch}{1.5}
+     \begin{tabularx}{\textwidth}{| X | X | X | X | X | X | X | X | X | X | X | X | X | X | X |}
+         \hline
+         \textbf{\#} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} & \textbf{\#} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} & \textbf{\#} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} \\
+         \hline
+     \end{tabularx}
+     \caption{\label{tab:game_tree_utility_values}Game Tree Utility Values}
+ \end{table}
+
 
 \rule{\textwidth}{0.5pt}
 
