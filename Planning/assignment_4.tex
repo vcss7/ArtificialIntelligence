@@ -1,6 +1,7 @@
 \documentclass[11pt]{article}
 
 \usepackage{xcolor}
+\usepackage{enumerate}
 \usepackage{enumitem}
 \usepackage[margin=1.0in]{geometry}
 \usepackage[none]{hyphenat}
@@ -26,7 +27,31 @@ variables, domains and constraints of the problem.}
     \begin{enumerate}[label=(\alph*)]
         \itemsep1em
         \item SATURN + URANUS = PLANETS
+            \begin{itemize}
+                \itemsep1em
+                \item Variables: S, A, T, U, R, N, P, L.
+                \item Domains: Each varialbe can have values: $\{0, 1, 2, 3, 4,
+                    5, 6, 7, 8, 9\}$.
+                \item Constraints:
+                    \begin{enumerate}[label=\arabic*.]
+                        \item The arithmetic equation given.
+                        \item (Presumably) Each variable must have a unique
+                            digit assign to it.
+                    \end{enumerate}
+            \end{itemize}
         \item YES + SEND + ME + MORE = MONEY
+            \begin{itemize}
+                \itemsep1em
+                \item Variables: Y, E, S, N, D, M, O, R.
+                \item Domains: Each varialbe can have values: $\{0, 1, 2, 3, 4,
+                    5, 6, 7, 8, 9\}$.
+                \item Constraints:
+                    \begin{enumerate}[label=\arabic*.]
+                        \item The arithmetic equation given.
+                        \item (Presumably) Each variable must have a unique
+                            digit assign to it.
+                    \end{enumerate}
+            \end{itemize}
     \end{enumerate}
 
 \rule[0.1pt]{40em}{1.0pt}
