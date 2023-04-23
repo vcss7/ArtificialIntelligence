@@ -7,6 +7,8 @@
 \usepackage[none]{hyphenat}
 \usepackage{amsfonts,amsmath,amssymb}
 \usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{shapes}
 
 \thispagestyle{fancy}
 \headheight14pt
@@ -25,10 +27,8 @@ different digit and the resulting sum is correct. \textbf{Write out all
 variables, domains and constraints of the problem.}
 
     \begin{enumerate}[label=(\alph*)]
-        \itemsep1em
         \item SATURN + URANUS = PLANETS
             \begin{itemize}
-                \itemsep1em
                 \item Variables: S, A, T, U, R, N, P, L.
                 \item Domains: Each varialbe can have values: $\{0, 1, 2, 3, 4,
                     5, 6, 7, 8, 9\}$.
@@ -41,7 +41,6 @@ variables, domains and constraints of the problem.}
             \end{itemize}
         \item YES + SEND + ME + MORE = MONEY
             \begin{itemize}
-                \itemsep1em
                 \item Variables: Y, E, S, N, D, M, O, R.
                 \item Domains: Each varialbe can have values: $\{0, 1, 2, 3, 4,
                     5, 6, 7, 8, 9\}$.
@@ -65,15 +64,96 @@ color.
 $\{ (a, b),(a, d),(b, c),(b, d),(b, g),(c, g),(d, e),(d, f),(d, g),(f, g) \}$
 \end{center}
 
+% Node styles
+\tikzstyle{none}=[]
+\tikzstyle{circle}=[fill=white, draw=black, shape=circle]
+\tikzstyle{red circle}=[fill=red, draw=black, shape=circle]
+\tikzstyle{green circle}=[fill=green, draw=black, shape=circle]
+\tikzstyle{blue circle}=[fill=blue, draw=black, shape=circle]
+
 \begin{enumerate}[label=(\alph*)]
 \itemsep1em
 
-    \item Define a CSP for this problem. Clearly define the variables, domains,
-        and constraints.
-        
-    \item Draw the binary constraint graph for this CSP.
+    \item Define a Constraint Satisfaction Problem for this problem. Clearly
+        define the variables, domains, and constraints.
 
-    \item Find at least one solution to the CSP. 
+        \begin{itemize}
+            \item Variables: The color of each of the nodes $\{a, b, c, d, e, f,
+                g\}$
+            \item Domains: For each node, the possible colors of the node. $\{
+                    red, blue, green\}$
+            \item Constraints: The edges specified must exist and if two nodes
+                are connected by an edge, they cannot be the same color.
+        \end{itemize}
+        
+    \item Draw the binary constraint graph for this Constraint Satisfaction
+        Problem.
+
+        \begin{center}
+            \begin{tikzpicture}
+                \node [style=circle] (1) at (0,0) {a};
+                \node [style=circle] (2) at (-1, -0.75) {b};
+                \node [style=circle] (3) at (-1.5, -1.75) {c};
+                \node [style=circle] (4) at (1, -0.75) {d};
+                \node [style=circle] (5) at (1.5, -1.75) {e};
+                \node [style=circle] (6) at (0.5, -2.75) {f};
+                \node [style=circle] (7) at (-0.5, -2.75) {g};
+                \node [style=none] (8) at (0, 0.5) {\{red, blue, green\}};
+                \node [style=none] (9) at (3, -0.5) {\{red, blue, green\}};
+                \node [style=none] (14) at (-3, -0.5) {\{red, blue, green\}};
+                \node [style=none] (13) at (3.5, -1.75) {\{red, blue, green\}};
+                \node [style=none] (11) at (-3.5, -1.75) {\{red, blue, green\}};
+                \node [style=none] (12) at (1.75, -3.5) {\{red, blue, green\}};
+                \node [style=none] (10) at (-1.75, -3.5) {\{red, blue, green\}};
+                \draw (1) to (2);
+                \draw (1) to (4);
+                \draw (2) to (3);
+                \draw (2) to (4);
+                \draw (2) to (7);
+                \draw (3) to (7);
+                \draw (4) to (7);
+                \draw (4) to (5);
+                \draw (6) to (7);
+                \draw (6) to (5);
+            \end{tikzpicture}
+        \end{center}
+
+        \begin{itemize}
+            \item $C_a \neq C_b$
+            \item $C_a \neq C_d$
+            \item $C_b \neq C_c$
+            \item $C_b \neq C_d$
+            \item $C_b \neq C_g$
+            \item $C_c \neq C_g$
+            \item $C_d \neq C_e$
+            \item $C_d \neq C_f$
+            \item $C_d \neq C_g$
+            \item $C_f \neq C_g$
+        \end{itemize}
+
+    \item Find at least one solution to the Constraint Satisfaction Problem.
+        \begin{center}
+            \begin{tikzpicture}
+                \node [style=red circle] (1) at (0,0) {a};
+                \node [style=blue circle] (2) at (-1, -0.75) {b};
+                \node [style=green circle] (3) at (-1.5, -1.75) {c};
+                \node [style=green circle] (4) at (1, -0.75) {d};
+                \node [style=red circle] (5) at (1.5, -1.75) {e};
+                \node [style=blue circle] (6) at (0.5, -2.75) {f};
+                \node [style=red circle] (7) at (-0.5, -2.75) {g};
+                \draw (1) to (2);
+                \draw (1) to (4);
+                \draw (2) to (3);
+                \draw (2) to (4);
+                \draw (2) to (7);
+                \draw (3) to (7);
+                \draw (4) to (7);
+                \draw (4) to (5);
+                \draw (6) to (7);
+                \draw (6) to (5);
+            \end{tikzpicture}
+        \end{center}
+
 
 \end{enumerate}
 \rule[0.1pt]{40em}{1.0pt}
