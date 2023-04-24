@@ -154,7 +154,6 @@ $\{ (a, b),(a, d),(b, c),(b, d),(b, g),(c, g),(d, e),(d, f),(d, g),(f, g) \}$
             \end{tikzpicture}
         \end{center}
 
-
 \end{enumerate}
 \rule[0.1pt]{40em}{1.0pt}
 
@@ -184,14 +183,100 @@ Consider a block stacking robot with the following actions:
         \end{itemize}
 \end{itemize}
 
-Create a plan for each of the initial state/goal pairs below
-Assume armEmpty is in initial state and the table has infinite space
+Create a plan for each of the initial state/goal pairs below.
+Assume armEmpty is in initial state and the table has infinite space.
+
+\tikzstyle{block}=[fill=white, draw=black, shape=rectangle]
+\tikzstyle{floor}=[-, fill=black]
 
 \begin{enumerate}[label=(\alph*)]
 \itemsep1em
-    \item TODO
-    \item TODO
-    \item TODO
+    \item 
+        \hspace{2em}
+        Initial State:
+        \begin{tikzpicture}
+            \node [style=block] (2) at (1.25, -0.75) {A};
+            \node [style=block] (3) at (0.75, -0.75) {B};
+            \node [style=none] (4) at (0.25, -1) {};
+            \node [style=none] (5) at (1.75, -1) {};
+            \draw [style=floor] (4.center) to (5.center);
+        \end{tikzpicture}
+        \hspace{2em}
+        Goal State:
+        \begin{tikzpicture}
+            \node [style=block] (0) at (3.5, -0.25) {A};
+            \node [style=block] (1) at (3.5, -0.75) {B};
+            \node [style=none] (6) at (2.75, -1) {};
+            \node [style=none] (7) at (4.25, -1) {};
+            \draw [style=floor] (6.center) to (7.center);
+        \end{tikzpicture}
+
+        \vspace{1em}Plan:
+        \begin{enumerate}[label=\arabic*.]
+            \item PickUp(A)
+            \item Stack(A, B)
+        \end{enumerate}
+
+    \item
+        \hspace{2em}
+        Initial State:
+        \begin{tikzpicture}
+            \node [style=block] (0) at (1, -0.25) {A};
+            \node [style=block] (1) at (1, -0.75) {B};
+            \node [style=none] (4) at (0.25, -1) {};
+            \node [style=none] (5) at (1.75, -1) {};
+            \draw [style=floor] (4.center) to (5.center);
+        \end{tikzpicture}
+        \hspace{2em}
+        Goal State:
+        \begin{tikzpicture}
+            \node [style=block] (2) at (3.5, -0.75) {A};
+            \node [style=block] (3) at (3.5, -0.25) {B};
+            \node [style=none] (6) at (2.75, -1) {};
+            \node [style=none] (7) at (4.25, -1) {};
+            \draw [style=floor] (6.center) to (7.center);
+        \end{tikzpicture}
+
+        \vspace{1em}Plan:
+        \begin{enumerate}[label=\arabic*.]
+            \item Unstack(A)
+            \item Putdown(A)
+            \item Pickup(B)
+            \item Stack(B, A)
+        \end{enumerate}
+
+    \item
+        \hspace{2em}
+        Initial State:
+        \begin{tikzpicture}
+            \node [style=block] (8) at (0.75, -1.25) {A};
+            \node [style=block] (9) at (1.25, -1.25) {B};
+            \node [style=block] (10) at (0.75, -0.75) {C};
+            \node [style=none] (4) at (0.25, -1.5) {};
+            \node [style=none] (5) at (1.75, -1.5) {};
+            \draw [style=floor] (4.center) to (5.center);
+        \end{tikzpicture}
+        \hspace{2em}
+        Goal State:
+        \begin{tikzpicture}
+            \node [style=none] (6) at (2.75, -1.5) {};
+            \node [style=none] (7) at (4.25, -1.5) {};
+            \node [style=block] (11) at (3.5, -0.25) {A};
+            \node [style=block] (12) at (3.5, -0.75) {B};
+            \node [style=block] (13) at (3.5, -1.25) {C};
+            \draw [style=floor] (6.center) to (7.center);
+        \end{tikzpicture}
+
+        \vspace{1em}Plan:
+        \begin{enumerate}[label=\arabic*.]
+            \item Unstack(C, A)
+            \item Putdown(C)
+            \item Pickup(B)
+            \item Stack(B, C)
+            \item Pickup(A)
+            \item Stack(A, C)
+        \end{enumerate}
+
 \end{enumerate}
 
 \rule[0.1pt]{40em}{1.0pt}
