@@ -52,7 +52,6 @@ def check_sudoku(board):
 # Takes in 2D List representing the board and fills in empty/None squares using AC3
 def solve_sudoku(board):
     domain = {1, 2, 3, 4, 5, 6, 7, 8, 9}
-    arcs = []
 
     # initialize cells with domains
     for row in range(9):
@@ -60,7 +59,46 @@ def solve_sudoku(board):
             if board[row][col] is None:
                 board[row][col] = domain.copy()
 
+    # cleans up domains by checking if any values are already in the row, column, or subsquare
+    revised = True
+    while(revised):
+        revised = False
+        # eliminate values from domains
+        for row in range(9):
+            for col in range(9):
+                # if cell has a domain of numbers
+                if isinstance(board[row][col], set):
+                    # eliminate values from row and column
+                    for i in range(9):
+                        if board[row][i] is not None and i != col:
+                            board[row][col].discard(board[row][i])
+                            revised = True
+                        if board[i][col] is not None and i != row:
+                            board[row][col].discard(board[i][col])
+                            revised = True
+                    # eliminate values from subsquare
+                    for i in range(3):
+                        for j in range(3):
+                            x = row - row % 3 + i
+                            y = col - col % 3 + j
+                            if board[x][y] is not None and x != row and y != col:
+                                board[row][col].discard(board[x][y])
+                                revised = True
+                    # if only one value left in domain, set cell to that value
+                    if len(board[row][col]) == 1:
+                        board[row][col] = board[row][col].pop()
+                    # if no values left in domain, cell has no solution
+                    if len(board[row][col]) == 0:
+                        return False
+
+    print("After Elimination")
+    print_sudoku(board)
+    return
+
     # initialize arcs
+    arcs = []
+
+    # add all arcs to queue
     for row in range(9):
         for col in range(9):
             # if cell has a domain of numbers
@@ -79,30 +117,6 @@ def solve_sudoku(board):
                         if i != row % 3 and j != col % 3:
                             arcs.append(((row, col), (x, y)))
 
-    # eliminate values from domains
-    for row in range(9):
-        for col in range(9):
-            # if cell has a domain of numbers
-            if isinstance(board[row][col], set):
-                # eliminate values from domains
-                for i in range(9):
-                    if board[row][i] is not None and i != col:
-                        board[row][col].discard(board[row][i])
-                    if board[i][col] is not None and i != row:
-                        board[row][col].discard(board[i][col])
-                # eliminate values from subsquare
-                for i in range(3):
-                    for j in range(3):
-                        x = row - row % 3 + i
-                        y = col - col % 3 + j
-                        if board[x][y] is not None and x != row and y != col:
-                            board[row][col].discard(board[x][y])
-
-    print("After Elimination")
-    print_sudoku(board)
-    return
-
-    print("After AC3")
     # AC3
     while len(arcs) > 0:
         (x, y) = arcs.pop(0)
@@ -113,10 +127,9 @@ def solve_sudoku(board):
                     board[x[0]][x[1]].remove(x_value)
                     if len(board[x[0]][x[1]]) == 1:
                         arcs.append(((x[0], x[1]), (x[0], x[1])))
-
-    print("After AC3")
-    print_sudoku(board)
-    return
+                    if len(board[x[0]][x[1]]) == 0:
+                        return False
+                    break
 # ------------------------------------------------------------------------------
 
 problem1 = [[None, None, 3   , None, 2   , None, 6   , None, None],
@@ -159,7 +172,6 @@ print("Final State")
 print_sudoku(problem1)
 print("")
 
-"""
 print('-' * 80)
 print("Example 2")
 print("Initial State")
@@ -179,4 +191,3 @@ print("Solved: " + str(check_sudoku(problem3)))
 print("Final State")
 print_sudoku(problem3)
 print("")
-"""
